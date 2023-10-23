@@ -1,0 +1,53 @@
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id         Int          @id @default(autoincrement())
+  email      String       @unique
+  name       String
+  // Add other user-related fields, e.g., password hash, authentication tokens, etc.
+  Event      Event[]
+  Attendance Attendance[]
+}
+
+model Event {
+  id          Int          @id @default(autoincrement())
+  name        String
+  coverPhoto  String // Store cover photo URL
+  dateFrom    DateTime
+  dateTo      DateTime
+  location    String
+  description String
+  host        User         @relation(fields: [hostId], references: [id])
+  hostId      Int
+  // Add other event-related fields, e.g., attendance, event status, etc.
+  Attendance  Attendance[]
+
+  @@index([hostId])
+}
+
+enum Response {
+  YES
+  NO
+  MAYBE
+}
+
+model Attendance {
+  id       Int      @id @default(autoincrement())
+  userId   Int
+  user     User     @relation(fields: [userId], references: [id])
+  eventId  Int
+  event    Event    @relation(fields: [eventId], references: [id])
+  response Response
+
+  // Add fields for subscriptions and notification preferences
+  @@index([userId])
+  @@index([eventId])
+}
