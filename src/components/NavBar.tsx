@@ -38,7 +38,7 @@ const NavBar = () => {
   /* menu items */
   const menus = [
     { title: "About", path: "/about" },
-    { title: "Github", path: "/dashboard" },
+    { title: "Github", path: "https://github.com/MalaRuze/upfesto" },
   ];
 
   return (
