@@ -8,46 +8,47 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model User {
-  id         Int          @id @default(autoincrement())
-  email      String       @unique
-  name       String
-  // Add other user-related fields, e.g., password hash, authentication tokens, etc.
-  Event      Event[]
-  Attendance Attendance[]
-}
-
 model Event {
-  id          Int          @id @default(autoincrement())
-  name        String
-  coverPhoto  String // Store cover photo URL
+  id          String       @id @default(uuid())
+  title       String
+  description String?
+  imageUrl    String?
+  dateCreated DateTime     @default(now())
+  dateUpdated DateTime     @updatedAt
   dateFrom    DateTime
-  dateTo      DateTime
-  location    String
-  description String
+  dateTo      DateTime?
   host        User         @relation(fields: [hostId], references: [id])
-  hostId      Int
-  // Add other event-related fields, e.g., attendance, event status, etc.
-  Attendance  Attendance[]
+  hostId      String
+  Attendances Attendance[]
 
   @@index([hostId])
+}
+
+model User {
+  id              String       @id
+  firstName       String
+  lastName        String
+  fullName        String
+  email           String       @unique
+  profileImageUrl String?
+  eventsHosted    Event[]
+  Attendances     Attendance[]
+}
+
+model Attendance {
+  id       String   @id @default(uuid())
+  userId   String
+  user     User     @relation(fields: [userId], references: [id])
+  eventId  String
+  event    Event    @relation(fields: [eventId], references: [id])
+  response Response
+
+  @@index([userId])
+  @@index([eventId])
 }
 
 enum Response {
   YES
   NO
   MAYBE
-}
-
-model Attendance {
-  id       Int      @id @default(autoincrement())
-  userId   Int
-  user     User     @relation(fields: [userId], references: [id])
-  eventId  Int
-  event    Event    @relation(fields: [eventId], references: [id])
-  response Response
-
-  // Add fields for subscriptions and notification preferences
-  @@index([userId])
-  @@index([eventId])
 }
