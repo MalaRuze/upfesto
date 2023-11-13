@@ -12,6 +12,7 @@ model Event {
   id          String       @id @default(uuid())
   title       String
   description String?
+  location    String?
   imageUrl    String?
   dateCreated DateTime     @default(now())
   dateUpdated DateTime     @updatedAt
