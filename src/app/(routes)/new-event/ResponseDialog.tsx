@@ -69,7 +69,7 @@ const ResponseDialog = ({
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button variant="default">Respond</Button>
       </DialogTrigger>
       {!userId ? (
