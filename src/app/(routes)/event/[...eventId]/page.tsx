@@ -1,9 +1,8 @@
-import { useParams } from "next/navigation";
 import { getEventById } from "@/lib/events";
 import { getEventAttendance } from "@/lib/attendance";
-import Response from "@prisma/client";
-import { Button } from "@/components/ui/button";
+import { ResponseEnum } from "@prisma/client";
 import { currentUser } from "@clerk/nextjs";
+import ResponseDialog from "@/app/(routes)/new-event/ResponseDialog";
 
 interface EventPageProps {
   params: {
@@ -15,9 +14,11 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
   const user = await currentUser();
   const { event } = await getEventById(eventId[0]);
   const { attendance } = await getEventAttendance(eventId[0]);
-  const yesCount = attendance?.filter((a) => a.response === "YES");
-  const maybeCount = attendance?.filter((a) => a.response === "MAYBE");
-  const noCount = attendance?.filter((a) => a.response === "NO");
+  const yesCount = attendance?.filter((a) => a.response === ResponseEnum.YES);
+  const maybeCount = attendance?.filter(
+    (a) => a.response === ResponseEnum.MAYBE,
+  );
+  const noCount = attendance?.filter((a) => a.response === ResponseEnum.NO);
   const currentUserAttendance = attendance?.find((a) => a.userId === user?.id);
 
   return (
@@ -38,10 +39,12 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
           <div>{noCount?.length}</div>
         </div>
       </div>
-      {currentUserAttendance ? (
-        <Button variant="secondary">Change response</Button>
-      ) : (
-        <Button>Respond</Button>
+      {event?.id && (
+        <ResponseDialog
+          currentUserAttendance={currentUserAttendance}
+          eventId={event.id}
+          userId={user?.id}
+        />
       )}
     </main>
   );
