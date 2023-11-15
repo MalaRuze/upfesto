@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ResponseEnum } from "@prisma/client";
 
 const timeFormat = /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/;
 
@@ -19,4 +20,10 @@ export const NewEventFormDataSchema = z.object({
     })
     .optional(),
   hostId: z.string(),
+});
+
+export const AttendanceFormDataSchema = z.object({
+  eventId: z.string(),
+  userId: z.string(),
+  response: z.nativeEnum(ResponseEnum).optional(),
 });
