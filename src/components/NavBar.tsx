@@ -130,7 +130,7 @@ const NavBar = () => {
         </SignedIn>
         {/* sign in button */}
         <SignedOut>
-          <Link href="/sign-in">
+          <Link href="/dashboard">
             <Button size="sm">Sing In</Button>
           </Link>
         </SignedOut>
