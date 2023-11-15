@@ -37,18 +37,18 @@ model User {
 }
 
 model Attendance {
-  id       String   @id @default(uuid())
   userId   String
-  user     User     @relation(fields: [userId], references: [id])
+  user     User         @relation(fields: [userId], references: [id])
   eventId  String
-  event    Event    @relation(fields: [eventId], references: [id])
-  response Response
+  event    Event        @relation(fields: [eventId], references: [id])
+  response ResponseEnum
 
+  @@id([userId, eventId])
   @@index([userId])
   @@index([eventId])
 }
 
-enum Response {
+enum ResponseEnum {
   YES
   NO
   MAYBE
