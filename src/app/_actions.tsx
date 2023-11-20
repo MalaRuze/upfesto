@@ -2,11 +2,18 @@
 
 import prisma from "../../prisma/client";
 import { z } from "zod";
-import { AttendanceFormDataSchema, NewEventFormDataSchema } from "@/lib/schema";
+import {
+  AttendanceFormDataSchema,
+  NewEventFormDataSchema,
+  UpdateEventFormDataSchema,
+} from "@/lib/schema";
 import { revalidatePath } from "next/cache";
 import { ResponseEnum } from "@prisma/client";
+import { addImage } from "@/lib/events";
+import { utapi } from "@/app/api/uploadthing/core";
 
 type NewEventInputs = z.infer<typeof NewEventFormDataSchema>;
+type UpdateEventInputs = z.infer<typeof UpdateEventFormDataSchema>;
 type NewAttendanceInputs = z.infer<typeof AttendanceFormDataSchema>;
 
 export async function createNewEvent(data: NewEventInputs) {
@@ -43,6 +50,38 @@ export async function createNewEvent(data: NewEventInputs) {
   });
 
   revalidatePath("/dashboard");
+  return { success: true, event };
+}
+
+export async function updateEvent(data: UpdateEventInputs) {
+  const validation = UpdateEventFormDataSchema.safeParse(data);
+  if (!validation.success) {
+    return { success: false, error: validation.error.errors };
+  }
+
+  const dateFromString = data.dateFrom.toISOString().split("T")[0];
+  const dateTimeFrom = new Date(`${dateFromString}T${data.timeFrom}`);
+  const dateToString = data.dateTo?.toISOString().split("T")[0];
+  const dateTimeTo = dateToString
+    ? new Date(`${dateToString}T${data.timeTo}`)
+    : undefined;
+
+  const event = await prisma.event.update({
+    where: {
+      id: data.id,
+    },
+    data: {
+      title: data.title,
+      description: data.description,
+      location: data.location,
+      imageUrl: data.imageUrl,
+      dateFrom: dateTimeFrom,
+      dateTo: dateTimeTo ? dateTimeTo : null,
+    },
+  });
+
+  revalidatePath("/dashboard");
+  revalidatePath(`/event/${data.id}`);
   return { success: true, event };
 }
 
@@ -110,5 +149,47 @@ export async function createNewAttendance(data: NewAttendanceInputs) {
     });
     revalidatePath(`/event/${data.eventId}`);
     return { success: true, attendance };
+  }
+}
+
+export async function handleImageUpload(eventId: string, imageUrl: string) {
+  //TODO: handle deleting existing image
+
+  // check if there is an existing image
+  // const existingEvent = await prisma.event.findUnique({
+  //   where: {
+  //     id: eventId,
+  //   },
+  // });
+  //
+  // if (existingEvent?.imageUrl) {
+  //   //delete existing image from uploadthing
+  //   await utapi.deleteFiles(existingEvent.imageUrl);
+  // }
+
+  //update event with new image
+  try {
+    const event = await addImage(eventId, imageUrl);
+    revalidatePath(`/event/${eventId}`);
+    return { success: true, event };
+  } catch (error) {
+    return { success: false, error };
+  }
+}
+
+export async function deleteImageFromEvent(eventId: string) {
+  try {
+    const event = await prisma.event.update({
+      where: {
+        id: eventId,
+      },
+      data: {
+        imageUrl: null,
+      },
+    });
+    revalidatePath(`/event/${eventId}`);
+    return { success: true, event };
+  } catch (error) {
+    return { success: false, error };
   }
 }
