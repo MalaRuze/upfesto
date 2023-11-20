@@ -4,6 +4,7 @@ import Link from "next/link";
 import { getUserEvents } from "@/lib/events";
 import { Event } from "@prisma/client";
 import { getTimeFromDate } from "@/lib/utils";
+import EventHandlerDialog from "@/components/EventHandlerDialog";
 
 const DashboardPage = async () => {
   const { events } = await getUserEvents();
@@ -11,15 +12,19 @@ const DashboardPage = async () => {
     <main className="flex min-h-screen flex-col px-24 pt-16 gap-8">
       <h1 className="text-2xl font-bold">Events</h1>
       <div className="grid grid-cols-3 gap-8">
-        <Link href="/new-event">
-          <Button
-            variant="outline"
-            className="h-60 flex flex-col items-center justify-around p-20 w-full"
-          >
-            <AddIcon className="text-4xl text-primary" />
-            <p>Create event</p>
-          </Button>
-        </Link>
+        <EventHandlerDialog
+          mode="create"
+          trigger={
+            <Button
+              variant="outline"
+              className="h-60 flex flex-col items-center justify-around p-20 w-full"
+              type="button"
+            >
+              <AddIcon className="text-4xl text-primary" />
+              <p>Create event</p>
+            </Button>
+          }
+        />
         {events?.map((event: Event) => (
           <Link href={`/event/${event.id}`} key={event.id}>
             <Button
