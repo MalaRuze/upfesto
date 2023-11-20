@@ -8,6 +8,7 @@ export default authMiddleware({
     "/",
     "/about",
     "/api/webhooks/clerk",
+    "/api/uploadthing",
     "/api/users",
     /event\/.*/,
   ],

@@ -27,3 +27,19 @@ export async function getEventById(eventId: string) {
     return { error };
   }
 }
+
+export async function addImage(eventId: string, imageUrl: string) {
+  try {
+    const event = await prisma.event.update({
+      where: {
+        id: eventId,
+      },
+      data: {
+        imageUrl,
+      },
+    });
+    return { event };
+  } catch (error) {
+    return { error };
+  }
+}
