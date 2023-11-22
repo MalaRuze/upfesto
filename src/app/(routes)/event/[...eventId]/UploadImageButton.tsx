@@ -33,9 +33,23 @@ const UploadImageButton = ({ eventId, imageUrl }: UploadImageButtonProps) => {
       <DropdownMenuContent align="end" className="px-2">
         <UploadButton
           endpoint="imageUploader"
-          onClientUploadComplete={async (res) => {
+          onClientUploadComplete={async (uploadRes) => {
             try {
-              await handleImageUpload(eventId, res[0].url);
+              const res = await handleImageUpload(eventId, uploadRes[0].url);
+              if (!res) {
+                toast({
+                  variant: "destructive",
+                  title: "Image upload failed",
+                  description: `Something went wrong, please try again later.`,
+                });
+              }
+              if (res?.success === false) {
+                toast({
+                  title: "Something went wrong",
+                  description: res.error + " Please try again later.",
+                  variant: "destructive",
+                });
+              }
               toast({
                 title: "Image uploaded",
                 description: "Your new cover image has been uploaded",
