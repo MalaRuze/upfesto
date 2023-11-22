@@ -1,6 +1,5 @@
 "use server";
 
-import prisma from "../../prisma/client";
 import { z } from "zod";
 import {
   AttendanceFormDataSchema,
@@ -9,151 +8,171 @@ import {
 } from "@/lib/schema";
 import { revalidatePath } from "next/cache";
 import { ResponseEnum } from "@prisma/client";
-import { addImage } from "@/lib/events";
-import { utapi } from "@/app/api/uploadthing/core";
+import { addImage, createEvent, deleteImage, updateEvent } from "@/lib/events";
+import {
+  createAttendance,
+  deleteAttendance,
+  findAttendanceById,
+  updateAttendance,
+} from "@/lib/attendance";
+import { getErrorMessage } from "@/lib/utils";
+import { format } from "date-fns-tz";
 
 type NewEventInputs = z.infer<typeof NewEventFormDataSchema>;
 type UpdateEventInputs = z.infer<typeof UpdateEventFormDataSchema>;
 type NewAttendanceInputs = z.infer<typeof AttendanceFormDataSchema>;
 
-export async function createNewEvent(data: NewEventInputs) {
+const timezone = "Europe/Berlin";
+
+export const createEventAction = async (data: NewEventInputs) => {
   const validation = NewEventFormDataSchema.safeParse(data);
   if (!validation.success) {
     return { success: false, error: validation.error.errors };
   }
 
-  const dateFromString = data.dateFrom.toISOString().split("T")[0];
+  // format date and time into a single datetime
+  const dateFromString = format(data.dateFrom, "yyyy-MM-dd", {
+    timeZone: timezone,
+  });
   const dateTimeFrom = new Date(`${dateFromString}T${data.timeFrom}`);
-  const dateToString = data.dateTo?.toISOString().split("T")[0];
+  const dateToString = data.dateTo
+    ? format(data.dateTo, "yyyy-MM-dd", { timeZone: timezone })
+    : undefined;
   const dateTimeTo = dateToString
     ? new Date(`${dateToString}T${data.timeTo}`)
     : undefined;
 
-  const event = await prisma.event.create({
-    data: {
+  try {
+    const { event } = await createEvent({
       title: data.title,
       description: data.description,
-      location: data.location,
+      locationAddress: data.locationAddress,
+      locationLat: data.locationLat,
+      locationLon: data.locationLon,
       imageUrl: data.imageUrl,
       dateFrom: dateTimeFrom,
       dateTo: dateTimeTo ? dateTimeTo : null,
       hostId: data.hostId,
-    },
-  });
+    });
+    if (event) {
+      await createAttendance({
+        eventId: event.id,
+        userId: data.hostId,
+        response: ResponseEnum.YES,
+      });
+    }
+    revalidatePath("/dashboard");
+    return { success: true, event };
+  } catch (error) {
+    return { success: false, error: getErrorMessage(error) };
+  }
+};
 
-  await prisma.attendance.create({
-    data: {
-      eventId: event.id,
-      userId: data.hostId,
-      response: ResponseEnum.YES,
-    },
-  });
-
-  revalidatePath("/dashboard");
-  return { success: true, event };
-}
-
-export async function updateEvent(data: UpdateEventInputs) {
+export const updateEventAction = async (data: UpdateEventInputs) => {
   const validation = UpdateEventFormDataSchema.safeParse(data);
   if (!validation.success) {
     return { success: false, error: validation.error.errors };
   }
 
-  const dateFromString = data.dateFrom.toISOString().split("T")[0];
+  // format date and time into a single datetime
+  const dateFromString = format(data.dateFrom, "yyyy-MM-dd", {
+    timeZone: timezone,
+  });
   const dateTimeFrom = new Date(`${dateFromString}T${data.timeFrom}`);
-  const dateToString = data.dateTo?.toISOString().split("T")[0];
+  const dateToString = data.dateTo
+    ? format(data.dateTo, "yyyy-MM-dd", { timeZone: timezone })
+    : undefined;
   const dateTimeTo = dateToString
     ? new Date(`${dateToString}T${data.timeTo}`)
     : undefined;
 
-  const event = await prisma.event.update({
-    where: {
+  try {
+    const { event } = await updateEvent({
       id: data.id,
-    },
-    data: {
       title: data.title,
       description: data.description,
-      location: data.location,
+      locationAddress: data.locationAddress,
+      locationLat: data.locationLat,
+      locationLon: data.locationLon,
       imageUrl: data.imageUrl,
       dateFrom: dateTimeFrom,
       dateTo: dateTimeTo ? dateTimeTo : null,
-    },
-  });
+      hostId: data.hostId,
+    });
+    revalidatePath("/dashboard");
+    revalidatePath(`/event/${data.id}`);
+    return { success: true, event };
+  } catch (error) {
+    return { success: false, error: getErrorMessage(error) };
+  }
+};
 
-  revalidatePath("/dashboard");
-  revalidatePath(`/event/${data.id}`);
-  return { success: true, event };
-}
-
-export async function createNewAttendance(data: NewAttendanceInputs) {
+export const createNewAttendance = async (data: NewAttendanceInputs) => {
   const validation = AttendanceFormDataSchema.safeParse(data);
   if (!validation.success) {
-    return { success: false, error: validation.error.errors };
+    return { success: false, error: validation.error.errors[0].message };
   }
 
-  //check if attendance already exists
-  const existingAttendance = await prisma.attendance.findUnique({
-    where: {
-      userId_eventId: {
-        eventId: data.eventId,
-        userId: data.userId,
-      },
-    },
-  });
+  const existingAttendance = await findAttendanceById(
+    data.userId,
+    data.eventId,
+  );
 
-  //if attendance exists, update the response
-  if (existingAttendance) {
-    //if response is undefined, delete the attendance
+  // check if attendance exists
+  if (existingAttendance.attendance) {
+    // delete attendance if response is undefined
     if (data.response === undefined) {
-      await prisma.attendance.delete({
-        where: {
-          userId_eventId: {
-            eventId: data.eventId,
-            userId: data.userId,
-          },
-        },
-      });
-      revalidatePath(`/event/${data.eventId}`);
-      return { success: true, attendance: null };
+      try {
+        await deleteAttendance(data.userId, data.eventId);
+        revalidatePath(`/event/${data.eventId}`);
+        return { success: true, attendance: null };
+      } catch (error) {
+        return { success: false, error: getErrorMessage(error) };
+      }
     }
 
-    //if response is the same, return the existing attendance
-    if (existingAttendance.response === data.response) {
+    // return existing attendance if response is the same
+    if (existingAttendance.attendance.response === data.response) {
       return { success: true, attendance: existingAttendance };
     }
 
-    //if response is different, update the attendance
-    const attendance = await prisma.attendance.update({
-      where: {
-        userId_eventId: {
-          eventId: data.eventId,
-          userId: data.userId,
-        },
-      },
-      data: {
-        response: data.response,
-      },
-    });
-    revalidatePath(`/event/${data.eventId}`);
-    return { success: true, attendance };
-  }
-
-  //if attendance does not exist, create it
-  if (data.response !== undefined) {
-    const attendance = await prisma.attendance.create({
-      data: {
+    // update attendance if response is different
+    try {
+      const { attendance } = await updateAttendance({
         eventId: data.eventId,
         userId: data.userId,
         response: data.response,
-      },
-    });
-    revalidatePath(`/event/${data.eventId}`);
-    return { success: true, attendance };
+      });
+      revalidatePath(`/event/${data.eventId}`);
+      return { success: true, attendance };
+    } catch (error) {
+      return { success: false, error: getErrorMessage(error) };
+    }
   }
-}
 
-export async function handleImageUpload(eventId: string, imageUrl: string) {
-  //TODO: handle deleting existing image
+  // return null attendance if response is undefined
+  if (data.response === undefined) {
+    return { success: true, attendance: null };
+  }
+
+  // create new attendance if response is not undefined
+  if (data.response) {
+    try {
+      const attendance = await createAttendance({
+        eventId: data.eventId,
+        userId: data.userId,
+        response: data.response,
+      });
+      revalidatePath(`/event/${data.eventId}`);
+      return { success: true, attendance };
+    } catch (error) {
+      return { success: false, error: getErrorMessage(error) };
+    }
+  }
+};
+
+export const handleImageUpload = async (eventId: string, imageUrl: string) => {
+  //TODO: handle deleting existing image from uploadthing
 
   // check if there is an existing image
   // const existingEvent = await prisma.event.findUnique({
@@ -167,29 +186,22 @@ export async function handleImageUpload(eventId: string, imageUrl: string) {
   //   await utapi.deleteFiles(existingEvent.imageUrl);
   // }
 
-  //update event with new image
   try {
     const event = await addImage(eventId, imageUrl);
     revalidatePath(`/event/${eventId}`);
     return { success: true, event };
   } catch (error) {
-    return { success: false, error };
+    return { success: false, error: getErrorMessage(error) };
   }
-}
+};
 
-export async function deleteImageFromEvent(eventId: string) {
+export const deleteImageFromEvent = async (eventId: string) => {
+  //TODO: handle deleting image from uploadthing
   try {
-    const event = await prisma.event.update({
-      where: {
-        id: eventId,
-      },
-      data: {
-        imageUrl: null,
-      },
-    });
+    const { event } = await deleteImage(eventId);
     revalidatePath(`/event/${eventId}`);
     return { success: true, event };
   } catch (error) {
-    return { success: false, error };
+    return { success: false, error: getErrorMessage(error) };
   }
-}
+};
