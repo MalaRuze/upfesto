@@ -5,39 +5,69 @@ const timeFormat = /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/;
 
 export const NewEventFormDataSchema = z.object({
   title: z.string().min(1),
-  description: z.string().optional(),
-  location: z.string().optional(),
-  imageUrl: z.string().optional(),
+  description: z.string().nullish(),
+  locationAddress: z.string().nullish(),
+  locationLat: z.number().nullish(),
+  locationLon: z.number().nullish(),
+  imageUrl: z.string().nullish(),
   dateFrom: z.date(),
   timeFrom: z.string().refine((value) => timeFormat.test(value), {
     message: "Time must be in format HH:MM",
   }),
-  dateTo: z.date().optional(),
+  dateTo: z.date().nullish(),
   timeTo: z
     .string()
     .refine((value) => timeFormat.test(value), {
       message: "Time must be in format HH:MM",
     })
-    .optional(),
+    .nullish(),
+  hostId: z.string(),
+});
+
+export const NewEventDataSchema = z.object({
+  title: z.string().min(1),
+  description: z.string().nullish(),
+  locationAddress: z.string().nullish(),
+  locationLat: z.number().nullish(),
+  locationLon: z.number().nullish(),
+  imageUrl: z.string().nullish(),
+  dateFrom: z.date(),
+  dateTo: z.date().nullish(),
   hostId: z.string(),
 });
 
 export const UpdateEventFormDataSchema = z.object({
   id: z.string(),
   title: z.string().min(1),
-  description: z.string().optional(),
-  location: z.string().optional(),
-  imageUrl: z.string().optional(),
+  description: z.string().nullish(),
+  locationAddress: z.string().nullish(),
+  locationLat: z.number().nullish(),
+  locationLon: z.number().nullish(),
+  imageUrl: z.string().nullish(),
   dateFrom: z.date(),
   timeFrom: z.string().refine((value) => timeFormat.test(value), {
     message: "Time must be in format HH:MM",
   }),
-  dateTo: z.date().optional(),
+  dateTo: z.date().nullish(),
   timeTo: z
-      .string()
-      .refine((value) => timeFormat.test(value), {
-        message: "Time must be in format HH:MM",
-      }).optional(),
+    .string()
+    .refine((value) => timeFormat.test(value), {
+      message: "Time must be in format HH:MM",
+    })
+    .nullish(),
+  hostId: z.string(),
+});
+
+export const UpdateEventDataSchema = z.object({
+  id: z.string(),
+  title: z.string().min(1),
+  description: z.string().nullish(),
+  locationAddress: z.string().nullish(),
+  locationLat: z.number().nullish(),
+  locationLon: z.number().nullish(),
+  imageUrl: z.string().nullish(),
+  dateFrom: z.date(),
+  dateTo: z.date().nullish(),
   hostId: z.string(),
 });
 
@@ -45,4 +75,10 @@ export const AttendanceFormDataSchema = z.object({
   eventId: z.string(),
   userId: z.string(),
   response: z.nativeEnum(ResponseEnum).optional(),
+});
+
+export const AttendanceDataSchema = z.object({
+  eventId: z.string(),
+  userId: z.string(),
+  response: z.nativeEnum(ResponseEnum),
 });
