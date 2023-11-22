@@ -9,18 +9,20 @@ generator client {
 }
 
 model Event {
-  id          String       @id @default(uuid())
-  title       String
-  description String?
-  location    String?
-  imageUrl    String?
-  dateCreated DateTime     @default(now())
-  dateUpdated DateTime     @updatedAt
-  dateFrom    DateTime
-  dateTo      DateTime?
-  host        User         @relation(fields: [hostId], references: [id])
-  hostId      String
-  Attendances Attendance[]
+  id              String       @id @default(uuid())
+  title           String
+  description     String?
+  locationAddress String?
+  locationLat     String?
+  locationLon     String?
+  imageUrl        String?
+  dateCreated     DateTime     @default(now())
+  dateUpdated     DateTime     @updatedAt
+  dateFrom        DateTime
+  dateTo          DateTime?
+  host            User         @relation(fields: [hostId], references: [id])
+  hostId          String
+  Attendances     Attendance[]
 
   @@index([hostId])
 }
