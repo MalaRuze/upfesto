@@ -27,6 +27,7 @@ import { createNewAttendance } from "@/app/_actions";
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
 
 type ResponseDialogProps = {
   currentUserAttendance?: Attendance;
@@ -39,6 +40,7 @@ const ResponseDialog = ({
   userId,
   eventId,
 }: ResponseDialogProps) => {
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof AttendanceFormDataSchema>>({
     resolver: zodResolver(AttendanceFormDataSchema),
     defaultValues: {
@@ -53,17 +55,27 @@ const ResponseDialog = ({
 
   const onSubmit = async (values: z.infer<typeof AttendanceFormDataSchema>) => {
     const res = await createNewAttendance(values);
-
-    console.log(res);
-
+    console.log(values);
+    if (res?.success === false) {
+      toast({
+        title: "Something went wrong",
+        description: res?.error + " Please try again later.",
+        variant: "destructive",
+      });
+      return;
+    }
     if (!res) {
-      setSubmitError("Something went wrong");
+      toast({
+        title: "Something went wrong",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
       return;
     }
-    if (res.error) {
-      setSubmitError(res.error[0].message);
-      return;
-    }
+    toast({
+      title: "Response saved",
+      description: "Your response has been saved.",
+    });
     setIsDialogOpen(false);
   };
 
