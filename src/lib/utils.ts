@@ -11,6 +11,46 @@ export const getTimeFromDate = (date: Date): string => {
   return `${hours}:${minutes}`;
 };
 
+export const getFormattedDateTime = (dateFrom: Date, dateTo?: Date) => {
+  const dateFromOptions: Intl.DateTimeFormatOptions = {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  };
+
+  const dateToOptions: Intl.DateTimeFormatOptions = {
+    month: "short",
+    day: "numeric",
+  };
+
+  const timeOptions: Intl.DateTimeFormatOptions = {
+    hour: "numeric",
+    minute: "numeric",
+  };
+
+  const currentYear = new Date().getFullYear();
+  const fromYear = dateFrom.getFullYear();
+  const toYear = dateTo?.getFullYear();
+
+  let formattedDateFrom = dateFrom.toLocaleString("en-GB", dateFromOptions);
+  if (!dateTo) {
+    formattedDateFrom += ` at ${dateFrom.toLocaleString("en-GB", timeOptions)}`;
+  }
+  if (fromYear !== currentYear) {
+    formattedDateFrom += `, ${fromYear}`;
+  }
+
+  if (dateTo) {
+    let formattedDateTo = dateTo.toLocaleString("en-GB", dateToOptions);
+    if (toYear !== currentYear) {
+      formattedDateTo += `, ${toYear}`;
+    }
+    return `${formattedDateFrom} - ${formattedDateTo}`;
+  }
+
+  return formattedDateFrom;
+};
+
 export const getErrorMessage = (error: unknown) => {
   let message: string;
 
