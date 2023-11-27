@@ -1,13 +1,23 @@
 import prisma from "../../prisma/client";
 import { z } from "zod";
 import { AttendanceDataSchema, AttendanceFormDataSchema } from "@/lib/schema";
-import { getErrorMessage } from "@/lib/utils";
 
 export const getEventAttendance = async (eventId: string) => {
   try {
     const attendance = await prisma.attendance.findMany({
       where: {
         eventId,
+      },
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+            fullName: true,
+            email: true,
+            profileImageUrl: true,
+          },
+        },
       },
     });
     return { attendance };
