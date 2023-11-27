@@ -190,7 +190,7 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
     >
       {/*Dialog Trigger*/}
       <DialogTrigger asChild>{props.trigger}</DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-h-screen overflow-y-auto px-2 min-[450px]:p-6 rounded-xl">
         {/*Dialog Header*/}
         <DialogHeader>
           <DialogTitle>
@@ -202,7 +202,6 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
               : "Update an existing event"}
           </DialogDescription>
         </DialogHeader>
-
         {/*Form*/}
         <Form {...form}>
           <form
