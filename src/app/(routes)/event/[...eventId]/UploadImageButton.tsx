@@ -26,8 +26,8 @@ const UploadImageButton = ({ eventId, imageUrl }: UploadImageButtonProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="bg-black/40 hover:bg-black/50 p-2 rounded-xl ">
-          <EditSharpIcon className="text-white" />
+        <button className="bg-white/80 hover:bg-white/95 p-2 rounded-xl  ">
+          <EditSharpIcon />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="px-2">
