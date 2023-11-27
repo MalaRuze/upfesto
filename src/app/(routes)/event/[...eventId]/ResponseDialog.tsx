@@ -28,6 +28,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
+import Emoji from "a11y-react-emoji";
+import { Check, Meh, X } from "lucide-react";
 
 type ResponseDialogProps = {
   currentUserAttendance?: Attendance;
@@ -49,7 +51,6 @@ const ResponseDialog = ({
       eventId: eventId,
     },
   });
-  const [submitError, setSubmitError] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const pathname = usePathname();
 
@@ -82,7 +83,9 @@ const ResponseDialog = ({
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button variant="default">Respond</Button>
+        <Button variant="default" className="w-full font-semibold">
+          Respond
+        </Button>
       </DialogTrigger>
       {!userId ? (
         <DialogContent className="sm:max-w-[425px]">
@@ -122,19 +125,22 @@ const ResponseDialog = ({
                         className="justify-between"
                       >
                         <ToggleGroupItem value="YES" aria-label="Toggle yes">
-                          👍 Going
+                          <Check className="pr-1 text-green-500" />
+                          Going
                         </ToggleGroupItem>
                         <ToggleGroupItem
                           value={ResponseEnum.MAYBE}
                           aria-label="Toggle maybe"
                         >
-                          🤷‍♂️ Maybe
+                          <Meh className="pr-1" />
+                          Maybe
                         </ToggleGroupItem>
                         <ToggleGroupItem
                           value={ResponseEnum.NO}
                           aria-label="Toggle no"
                         >
-                          👎 Can t go
+                          <X className="pr-1 text-red-500" />
+                          Can t go
                         </ToggleGroupItem>
                       </ToggleGroup>
                     </FormControl>
