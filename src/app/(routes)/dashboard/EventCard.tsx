@@ -26,6 +26,7 @@ const EventCard = async ({ event }: EventCardProps) => {
         variant="outline"
         className="h-60 grid grid-rows-5 w-full p-0 justify-normal"
       >
+        {/* Image */}
         <div className="bg-gradient-to-bl from-indigo-400 to-sky-100 w-full h-full rounded-t-xl row-span-3">
           {event?.imageUrl !== null && (
             <img
@@ -35,6 +36,7 @@ const EventCard = async ({ event }: EventCardProps) => {
             />
           )}
         </div>
+        {/* Event info */}
         <div className="row-span-2 w-full h-full flex flex-col items-start justify-around p-3">
           <p className="text-gray-500">{formattedDateTime}</p>
           <h2 className="text-lg font-bold">{event.title}</h2>
