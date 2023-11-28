@@ -4,7 +4,9 @@ import { z } from "zod";
 import {
   AttendanceFormDataSchema,
   NewEventFormDataSchema,
+  PostDataSchema,
   UpdateEventFormDataSchema,
+  UpdatePostDataSchema,
 } from "@/lib/schema";
 import { revalidatePath } from "next/cache";
 import { ResponseEnum } from "@prisma/client";
@@ -17,10 +19,13 @@ import {
 } from "@/lib/attendance";
 import { getErrorMessage } from "@/lib/utils";
 import { format } from "date-fns-tz";
+import { createPost, deletePost, updatePost } from "@/lib/posts";
 
 type NewEventInputs = z.infer<typeof NewEventFormDataSchema>;
 type UpdateEventInputs = z.infer<typeof UpdateEventFormDataSchema>;
 type NewAttendanceInputs = z.infer<typeof AttendanceFormDataSchema>;
+type NewPostInputs = z.infer<typeof PostDataSchema>;
+type UpdatePostInputs = z.infer<typeof UpdatePostDataSchema>;
 
 const timezone = "Europe/Berlin";
 
@@ -201,6 +206,52 @@ export const deleteImageFromEvent = async (eventId: string) => {
     const { event } = await deleteImage(eventId);
     revalidatePath(`/event/${eventId}`);
     return { success: true, event };
+  } catch (error) {
+    return { success: false, error: getErrorMessage(error) };
+  }
+};
+
+export const createPostAction = async (data: NewPostInputs) => {
+  const validation = PostDataSchema.safeParse(data);
+  if (!validation.success) {
+    return { success: false, error: validation.error.errors };
+  }
+  try {
+    const { post } = await createPost({
+      eventId: data.eventId,
+      message: data.message,
+      type: data.type,
+    });
+    revalidatePath(`/event/${data.eventId}`);
+    return { success: true, post };
+  } catch (error) {
+    return { success: false, error: getErrorMessage(error) };
+  }
+};
+
+export const updatePostAction = async (data: UpdatePostInputs) => {
+  const validation = UpdatePostDataSchema.safeParse(data);
+  if (!validation.success) {
+    return { success: false, error: validation.error.errors };
+  }
+  try {
+    const { post } = await updatePost({
+      id: data.id,
+      message: data.message,
+      eventId: data.eventId,
+    });
+    revalidatePath(`/event/${data.eventId}`);
+    return { success: true, post };
+  } catch (error) {
+    return { success: false, error: getErrorMessage(error) };
+  }
+};
+
+export const deletePostAction = async (postId: string) => {
+  try {
+    const { post } = await deletePost(postId);
+    revalidatePath(`/event/${post.eventId}`);
+    return { success: true, post };
   } catch (error) {
     return { success: false, error: getErrorMessage(error) };
   }
