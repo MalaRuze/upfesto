@@ -3,7 +3,7 @@ import { getEventAttendance } from "@/lib/attendance";
 import { currentUser } from "@clerk/nextjs";
 import ResponseDialog from "@/app/(routes)/event/[...eventId]/ResponseDialog";
 import UploadImageButton from "@/app/(routes)/event/[...eventId]/UploadImageButton";
-import { Calendar, CalendarPlus, MapPin, User2 } from "lucide-react";
+import { Calendar, MapPin, Pencil, User2 } from "lucide-react";
 import { getPublicUserInfoById } from "@/lib/users";
 import {
   getDetailedFormattedDateTime,
@@ -14,6 +14,11 @@ import { Button } from "@/components/ui/button";
 import ShareDialog from "@/app/(routes)/event/[...eventId]/ShareDialog";
 import CalendarButton from "@/app/(routes)/event/[...eventId]/CalendarButton";
 import LocationMap from "@/app/(routes)/event/[...eventId]/LocationMap";
+import EventHandlerDialog from "@/components/EventHandlerDialog";
+import PostHandlerDialog from "@/app/(routes)/event/[...eventId]/PostHandlerDialog";
+import { getEventPosts } from "@/lib/posts";
+import React from "react";
+import PostCard from "@/app/(routes)/event/[...eventId]/PostCard";
 
 interface EventPageProps {
   params: {
@@ -23,19 +28,25 @@ interface EventPageProps {
 
 const EventPage = async ({ params: { eventId } }: EventPageProps) => {
   const { event } = await getEventById(eventId[0]);
-  const user = await currentUser();
+  const { posts } = await getEventPosts(eventId[0]);
   const { attendance } = await getEventAttendance(eventId[0]);
+  const user = await currentUser();
   const currentUserAttendance = attendance?.find((a) => a.userId === user?.id);
 
   if (!event) {
     return <div>Loading ...</div>;
   }
 
+  // check if user is host
+  const isHost = user?.id === event.hostId;
+  // get host details
   const hostDetails = await getPublicUserInfoById(event.hostId);
+  // get formatted date
   const formattedDate = getDetailedFormattedDateTime(
     event.dateFrom,
     event.dateTo !== null ? event.dateTo : undefined,
   );
+  // get location address
   const locationAddress =
     event.locationAddress !== null
       ? splitStringAtFirstComma(event.locationAddress)
@@ -43,6 +54,7 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
 
   return (
     <main className="flex min-h-screen flex-col sm:p-8 max-w-screen-xl mx-auto">
+      {/* event image */}
       <div className="bg-gradient-to-bl from-indigo-400 to-sky-100  h-64 w-full  sm:rounded-xl relative">
         {event.imageUrl !== null && (
           <img
@@ -51,27 +63,46 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
             className="object-cover h-full w-full sm:rounded-xl"
           />
         )}
-        <div className="absolute bottom-4 right-4">
-          <UploadImageButton eventId={event.id} imageUrl={event.imageUrl} />
-        </div>
-        {/* Date short */}
+        {isHost && (
+          <div className="absolute bottom-4 right-4">
+            <UploadImageButton eventId={event.id} imageUrl={event.imageUrl} />
+          </div>
+        )}
+        {/* date short */}
         <div className="absolute w-20 h-20 bg-white/80 bottom-4 left-4 rounded-xl p-2 flex flex-col justify-between">
-          {/* Month */}
+          {/* month */}
           <p className="text-center">
             {event.dateFrom.toLocaleString("en-GB", { month: "short" })}
           </p>
-          {/* Day*/}
+          {/* day*/}
           <p className="text-4xl font-semibold text-center">
             {event.dateFrom.getDate()}
           </p>
         </div>
       </div>
+      {/* event title */}
       <h1 className="text-4xl p-4 w-full truncate">{event?.title}</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-5 gap-y-6 sm:gap-x-8 px-4 sm:px-0">
-        <div className="col-span-3 ">
-          {/* Event Info */}
-          <div className="bg-gray-100 p-4 rounded-xl text-sm space-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-5 gap-y-4 sm:gap-x-8 px-4 sm:px-0">
+        <div className="col-span-3 space-y-4">
+          {/* event details card */}
+          <div className="bg-gray-100 p-4 rounded-xl text-sm space-y-4 relative">
             <h2 className="text-base font-semibold">Event Details</h2>
+            {/* edit event */}
+            {isHost && (
+              <EventHandlerDialog
+                mode="update"
+                trigger={
+                  <Button
+                    variant="outline"
+                    className="flex gap-2 absolute right-2 -top-2"
+                  >
+                    <Pencil /> Edit
+                  </Button>
+                }
+                event={event}
+              />
+            )}
+            {/* event details */}
             <ul className="space-y-4">
               {hostDetails.user !== null && (
                 <li className="flex gap-3 items-center">
@@ -105,18 +136,57 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
             </ul>
             <p className="whitespace-pre-wrap">{event.description}</p>
           </div>
+          {/* create post */}
+          {user && isHost && (
+            <div className="w-full bg-gray-100 flex p-4 items-center rounded-xl gap-4">
+              <img
+                src={user.imageUrl}
+                alt="avatar"
+                className="w-8 h-8 rounded-full"
+              />
+              <PostHandlerDialog
+                eventId={event.id}
+                mode="create"
+                trigger={
+                  <Button variant="outline" className="w-full">
+                    Add a Post
+                  </Button>
+                }
+              />
+            </div>
+          )}
+          {/* posts */}
+          {posts.length > 0 ? (
+            posts.map((post) => (
+              <PostCard
+                post={post}
+                hostFullName={hostDetails.user?.fullName}
+                hostProfileImageUrl={hostDetails.user?.profileImageUrl}
+                key={post.id}
+              />
+            ))
+          ) : (
+            <div className="py-12 text-center text-gray-400 hidden sm:block">
+              No posts yet
+            </div>
+          )}
         </div>
         <div className="col-span-2 space-y-4">
+          {/* attendance card */}
           <AttendanceCard eventId={event.id} hostId={event.hostId} />
+          {/* response button */}
           <ResponseDialog
             eventId={event.id}
             userId={user?.id}
             currentUserAttendance={currentUserAttendance}
           />
           <div className="w-full grid grid-cols-2 gap-4">
+            {/* share button */}
             <ShareDialog />
+            {/* add to calendar button */}
             <CalendarButton event={event} />
           </div>
+          {/* location map */}
           {event.locationLat && event.locationLon && (
             <LocationMap
               lat={Number(event.locationLat)}
@@ -124,18 +194,6 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
             />
           )}
         </div>
-        {/*<div>*/}
-        {/*  <ResponseDialog*/}
-        {/*    currentUserAttendance={currentUserAttendance}*/}
-        {/*    eventId={event.id}*/}
-        {/*    userId={user?.id}*/}
-        {/*  />*/}
-        {/*  <EventHandlerDialog*/}
-        {/*    mode="update"*/}
-        {/*    trigger={<button>Update</button>}*/}
-        {/*    event={event}*/}
-        {/*  />*/}
-        {/*</div>*/}
       </div>
     </main>
   );
