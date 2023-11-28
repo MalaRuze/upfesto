@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ResponseEnum } from "@prisma/client";
+import { PostTypeEnum, ResponseEnum } from "@prisma/client";
 
 const timeFormat = /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/;
 
@@ -81,4 +81,16 @@ export const AttendanceDataSchema = z.object({
   eventId: z.string(),
   userId: z.string(),
   response: z.nativeEnum(ResponseEnum),
+});
+
+export const PostDataSchema = z.object({
+  eventId: z.string(),
+  message: z.string().min(5).max(300),
+  type: z.nativeEnum(PostTypeEnum),
+});
+
+export const UpdatePostDataSchema = z.object({
+  id: z.string(),
+  eventId: z.string(),
+  message: z.string().min(5).max(300),
 });

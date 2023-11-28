@@ -9,33 +9,36 @@ generator client {
 }
 
 model Event {
-  id              String       @id @default(uuid())
+  id              String          @id @default(uuid())
   title           String
   description     String?
   locationAddress String?
   locationLat     String?
   locationLon     String?
   imageUrl        String?
-  dateCreated     DateTime     @default(now())
-  dateUpdated     DateTime     @updatedAt
+  dateCreated     DateTime        @default(now())
+  dateUpdated     DateTime        @updatedAt
   dateFrom        DateTime
   dateTo          DateTime?
-  host            User         @relation(fields: [hostId], references: [id])
+  host            User            @relation(fields: [hostId], references: [id])
   hostId          String
   Attendances     Attendance[]
+  Posts           Posts[]
+  Subscribers     Subscribtions[]
 
   @@index([hostId])
 }
 
 model User {
-  id              String       @id
+  id              String          @id
   firstName       String
   lastName        String
   fullName        String
-  email           String       @unique
+  email           String          @unique
   profileImageUrl String
   eventsHosted    Event[]
   Attendances     Attendance[]
+  Subscribers     Subscribtions[]
 }
 
 model Attendance {
@@ -50,8 +53,38 @@ model Attendance {
   @@index([eventId])
 }
 
+model Posts {
+  id          String       @id @default(uuid())
+  eventId     String
+  event       Event        @relation(fields: [eventId], references: [id])
+  message     String
+  type        PostTypeEnum
+  dateCreated DateTime     @default(now())
+  dateUpdated DateTime     @updatedAt
+
+  @@index([eventId])
+}
+
+model Subscribtions {
+  userId      String
+  user        User         @relation(fields: [userId], references: [id])
+  eventId     String
+  event       Event        @relation(fields: [eventId], references: [id])
+  response    ResponseEnum
+  dateUpdated DateTime     @updatedAt
+
+  @@id([userId, eventId])
+  @@index([userId])
+  @@index([eventId])
+}
+
 enum ResponseEnum {
   YES
   NO
   MAYBE
+}
+
+enum PostTypeEnum {
+  AUTO
+  MANUAL
 }
