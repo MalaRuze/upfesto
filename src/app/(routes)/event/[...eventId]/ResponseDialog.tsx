@@ -84,7 +84,29 @@ const ResponseDialog = ({
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button variant="default" className="w-full font-semibold">
-          Respond
+          {currentUserAttendance?.response === ResponseEnum.YES && (
+            <>
+              <Check className="pr-1 text-green-500" />
+              <span className="pr-1 ">Going -</span>
+            </>
+          )}
+          {currentUserAttendance?.response === ResponseEnum.MAYBE && (
+            <>
+              <Meh className="pr-1" />
+              <span className="pr-1">Maybe -</span>
+            </>
+          )}
+          {currentUserAttendance?.response === ResponseEnum.NO && (
+            <>
+              <X className="pr-1 text-red-500" />
+              <span className="pr-1 ">Can&apos;t go -</span>
+            </>
+          )}
+          {currentUserAttendance?.response ? (
+            <span className="font-medium">Change response</span>
+          ) : (
+            <span>Respond</span>
+          )}
         </Button>
       </DialogTrigger>
       {!userId ? (
