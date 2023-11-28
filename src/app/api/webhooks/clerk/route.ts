@@ -26,7 +26,7 @@ async function validateRequest(request: Request) {
 }
 
 //handle request
-export async function handler(request: Request) {
+const handler = async (request: Request) => {
   try {
     const payload = await validateRequest(request);
     const event = payload.type;
@@ -73,7 +73,7 @@ export async function handler(request: Request) {
     // no changes were made to the database
     return Response.error();
   }
-}
+};
 
 export const GET = handler;
 export const POST = handler;
