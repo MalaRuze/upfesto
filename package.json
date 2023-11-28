@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "tunnel": "lt --port 3000 --subdomain upfesto-test"
+    "tunnel": "lt --port 3000 --subdomain upfesto-test",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@clerk/backend": "^0.34.1",
