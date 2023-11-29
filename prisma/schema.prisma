@@ -67,11 +67,10 @@ model Posts {
 
 model Subscribtions {
   userId      String
-  user        User         @relation(fields: [userId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
   eventId     String
-  event       Event        @relation(fields: [eventId], references: [id])
-  response    ResponseEnum
-  dateUpdated DateTime     @updatedAt
+  event       Event    @relation(fields: [eventId], references: [id])
+  dateUpdated DateTime @updatedAt
 
   @@id([userId, eventId])
   @@index([userId])

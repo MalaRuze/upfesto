@@ -94,3 +94,8 @@ export const UpdatePostDataSchema = z.object({
   eventId: z.string(),
   message: z.string().min(5).max(300),
 });
+
+export const SubscriptionDataSchema = z.object({
+  eventId: z.string(),
+  userId: z.string(),
+});
