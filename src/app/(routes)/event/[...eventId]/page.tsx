@@ -1,5 +1,5 @@
-import { getEventById } from "@/lib/events";
-import { getEventAttendance } from "@/lib/attendance";
+import { deleteAllEvents, getEventById } from "@/lib/events";
+import { deleteAllAttendance, getEventAttendance } from "@/lib/attendance";
 import { currentUser } from "@clerk/nextjs";
 import ResponseDialog from "@/app/(routes)/event/[...eventId]/ResponseDialog";
 import UploadImageButton from "@/app/(routes)/event/[...eventId]/UploadImageButton";
@@ -19,6 +19,9 @@ import PostHandlerDialog from "@/app/(routes)/event/[...eventId]/PostHandlerDial
 import { getEventPosts } from "@/lib/posts";
 import React from "react";
 import PostCard from "@/app/(routes)/event/[...eventId]/PostCard";
+import { restartPrisma } from "@/app/_actions";
+import SubscriptionSwitch from "@/app/(routes)/event/[...eventId]/SubscriptionSwitch";
+import { findSubscriptionById } from "@/lib/subscriptions";
 
 interface EventPageProps {
   params: {
@@ -37,6 +40,9 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
     return <div>Loading ...</div>;
   }
 
+  const subscription = !user?.id
+    ? false
+    : Boolean(await findSubscriptionById(user.id, event.id));
   // check if user is host
   const isHost = user?.id === event.hostId;
   // get host details
@@ -186,6 +192,11 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
             {/* add to calendar button */}
             <CalendarButton event={event} />
           </div>
+          <SubscriptionSwitch
+            eventId={event.id}
+            userId={user?.id}
+            subscription={subscription}
+          />
           {/* location map */}
           {event.locationLat && event.locationLon && (
             <LocationMap
