@@ -33,7 +33,7 @@
     "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-toggle": "^1.0.3",
     "@radix-ui/react-toggle-group": "^1.0.4",
-    "@uploadthing/react": "^6.0.0",
+    "@uploadthing/react": "^6.0.2",
     "@vis.gl/react-google-maps": "^0.3.3",
     "a11y-react-emoji": "^1.2.0",
     "axios": "^1.6.0",
@@ -53,6 +53,7 @@
     "svix": "^1.13.0",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",
+    "uploadthing": "^6.0.3",
     "use-google-maps-script": "^0.1.2",
     "use-places-autocomplete": "^4.0.1",
     "zod": "^3.22.4"
