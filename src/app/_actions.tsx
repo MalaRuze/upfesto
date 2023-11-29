@@ -5,27 +5,44 @@ import {
   AttendanceFormDataSchema,
   NewEventFormDataSchema,
   PostDataSchema,
+  SubscriptionDataSchema,
   UpdateEventFormDataSchema,
   UpdatePostDataSchema,
 } from "@/lib/schema";
 import { revalidatePath } from "next/cache";
-import { ResponseEnum } from "@prisma/client";
-import { addImage, createEvent, deleteImage, updateEvent } from "@/lib/events";
+import { PostTypeEnum, ResponseEnum } from "@prisma/client";
+import {
+  addImage,
+  createEvent,
+  deleteAllEvents,
+  deleteImage,
+  getEventById,
+  updateEvent,
+} from "@/lib/events";
 import {
   createAttendance,
+  deleteAllAttendance,
   deleteAttendance,
   findAttendanceById,
   updateAttendance,
 } from "@/lib/attendance";
-import { getErrorMessage } from "@/lib/utils";
+import { getErrorMessage, getFormattedDateTime } from "@/lib/utils";
 import { format } from "date-fns-tz";
 import { createPost, deletePost, updatePost } from "@/lib/posts";
+import {
+  createSubscription,
+  deleteSubscription,
+  findEventSubscriptions,
+  findSubscriptionById,
+} from "@/lib/subscriptions";
+import { Resend } from "resend";
 
 type NewEventInputs = z.infer<typeof NewEventFormDataSchema>;
 type UpdateEventInputs = z.infer<typeof UpdateEventFormDataSchema>;
 type NewAttendanceInputs = z.infer<typeof AttendanceFormDataSchema>;
 type NewPostInputs = z.infer<typeof PostDataSchema>;
 type UpdatePostInputs = z.infer<typeof UpdatePostDataSchema>;
+type SubscriptionInputs = z.infer<typeof SubscriptionDataSchema>;
 
 const timezone = "Europe/Berlin";
 
@@ -91,7 +108,10 @@ export const updateEventAction = async (data: UpdateEventInputs) => {
     ? new Date(`${dateToString}T${data.timeTo}`)
     : undefined;
 
+  //check if location or dateFrom changed and if so, create post
+
   try {
+    const existingEvent = await getEventById(data.id);
     const { event } = await updateEvent({
       id: data.id,
       title: data.title,
@@ -104,6 +124,41 @@ export const updateEventAction = async (data: UpdateEventInputs) => {
       dateTo: dateTimeTo ? dateTimeTo : null,
       hostId: data.hostId,
     });
+    if (
+      existingEvent.event &&
+      existingEvent.event.locationAddress !== data.locationAddress &&
+      existingEvent.event.dateFrom.getTime() === dateTimeFrom.getTime()
+    ) {
+      await createPostAction({
+        eventId: data.id,
+        message: `Location was changed to ${data.locationAddress}`,
+        type: PostTypeEnum.AUTO,
+      });
+    }
+    if (
+      existingEvent.event &&
+      existingEvent.event.dateFrom.getTime() !== dateTimeFrom.getTime() &&
+      existingEvent.event.locationAddress === data.locationAddress
+    ) {
+      await createPostAction({
+        eventId: data.id,
+        message: `Date was changed to ${getFormattedDateTime(data.dateFrom)}`,
+        type: PostTypeEnum.AUTO,
+      });
+    }
+    if (
+      existingEvent.event &&
+      existingEvent.event.dateFrom.getTime() !== dateTimeFrom.getTime() &&
+      existingEvent.event.locationAddress !== data.locationAddress
+    ) {
+      await createPostAction({
+        eventId: data.id,
+        message: `Date was changed to ${getFormattedDateTime(
+          data.dateFrom,
+        )} and location was changed to ${data.locationAddress}`,
+        type: PostTypeEnum.AUTO,
+      });
+    }
     revalidatePath("/dashboard");
     revalidatePath(`/event/${data.id}`);
     return { success: true, event };
@@ -211,17 +266,39 @@ export const deleteImageFromEvent = async (eventId: string) => {
   }
 };
 
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 export const createPostAction = async (data: NewPostInputs) => {
   const validation = PostDataSchema.safeParse(data);
   if (!validation.success) {
     return { success: false, error: validation.error.errors };
   }
+
   try {
     const { post } = await createPost({
       eventId: data.eventId,
       message: data.message,
       type: data.type,
     });
+    const { event, subscribedEmails } = await findEventSubscriptions(
+      data.eventId,
+    );
+    if (subscribedEmails.length > 0 && data.type === PostTypeEnum.MANUAL) {
+      await resend.emails.send({
+        from: "Upfesto <info@upfesto.com>",
+        to: subscribedEmails,
+        subject: "New post in event " + event.title,
+        text: data.message,
+      });
+    }
+    if (subscribedEmails.length > 0 && data.type === PostTypeEnum.AUTO) {
+      await resend.emails.send({
+        from: "Upfesto <info@upfesto.com>",
+        to: subscribedEmails,
+        subject: "Important changes in " + event.title,
+        text: data.message,
+      });
+    }
     revalidatePath(`/event/${data.eventId}`);
     return { success: true, post };
   } catch (error) {
@@ -252,6 +329,52 @@ export const deletePostAction = async (postId: string) => {
     const { post } = await deletePost(postId);
     revalidatePath(`/event/${post.eventId}`);
     return { success: true, post };
+  } catch (error) {
+    return { success: false, error: getErrorMessage(error) };
+  }
+};
+
+export const restartPrisma = async () => {
+  try {
+    await deleteAllAttendance();
+    await deleteAllEvents();
+  } catch (error) {
+    console.log(error);
+    return { success: false, error: getErrorMessage(error) };
+  }
+};
+
+export const handleSubscriptionAction = async (data: SubscriptionInputs) => {
+  const validation = SubscriptionDataSchema.safeParse(data);
+  if (!validation.success) {
+    return { success: false, error: validation.error.errors };
+  }
+
+  const existingSubscription = await findSubscriptionById(
+    data.userId,
+    data.eventId,
+  );
+
+  if (existingSubscription) {
+    try {
+      const { subscription } = await deleteSubscription(
+        data.userId,
+        data.eventId,
+      );
+      revalidatePath(`/event/${data.eventId}`);
+      return { success: true, subscription: null };
+    } catch (error) {
+      return { success: false, error: getErrorMessage(error) };
+    }
+  }
+
+  try {
+    const { subscription } = await createSubscription(
+      data.userId,
+      data.eventId,
+    );
+    revalidatePath(`/event/${data.eventId}`);
+    return { success: true, subscription };
   } catch (error) {
     return { success: false, error: getErrorMessage(error) };
   }
