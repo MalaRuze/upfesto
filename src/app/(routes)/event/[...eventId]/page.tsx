@@ -1,10 +1,10 @@
-import { deleteAllEvents, getEventById } from "@/lib/events";
-import { deleteAllAttendance, getEventAttendance } from "@/lib/attendance";
+import { getEventById } from "@/lib/db/events";
+import { getEventAttendance } from "@/lib/db/attendance";
 import { currentUser } from "@clerk/nextjs";
 import ResponseDialog from "@/app/(routes)/event/[...eventId]/ResponseDialog";
 import UploadImageButton from "@/app/(routes)/event/[...eventId]/UploadImageButton";
 import { Calendar, MapPin, Pencil, User2 } from "lucide-react";
-import { getPublicUserInfoById } from "@/lib/users";
+import { getPublicUserInfoById } from "@/lib/db/users";
 import {
   getDetailedFormattedDateTime,
   splitStringAtFirstComma,
@@ -16,12 +16,11 @@ import CalendarButton from "@/app/(routes)/event/[...eventId]/CalendarButton";
 import LocationMap from "@/app/(routes)/event/[...eventId]/LocationMap";
 import EventHandlerDialog from "@/components/EventHandlerDialog";
 import PostHandlerDialog from "@/app/(routes)/event/[...eventId]/PostHandlerDialog";
-import { getEventPosts } from "@/lib/posts";
+import { getEventPosts } from "@/lib/db/posts";
 import React from "react";
 import PostCard from "@/app/(routes)/event/[...eventId]/PostCard";
-import { restartPrisma } from "@/app/_actions";
 import SubscriptionSwitch from "@/app/(routes)/event/[...eventId]/SubscriptionSwitch";
-import { findSubscriptionById } from "@/lib/subscriptions";
+import { findSubscriptionById } from "@/lib/db/subscriptions";
 
 interface EventPageProps {
   params: {

@@ -18,23 +18,23 @@ import {
   deleteImage,
   getEventById,
   updateEvent,
-} from "@/lib/events";
+} from "@/lib/db/events";
 import {
   createAttendance,
   deleteAllAttendance,
   deleteAttendance,
   findAttendanceById,
   updateAttendance,
-} from "@/lib/attendance";
+} from "@/lib/db/attendance";
 import { getErrorMessage, getFormattedDateTime } from "@/lib/utils";
 import { format } from "date-fns-tz";
-import { createPost, deletePost, updatePost } from "@/lib/posts";
+import { createPost, deletePost, updatePost } from "@/lib/db/posts";
 import {
   createSubscription,
   deleteSubscription,
   findEventSubscriptions,
   findSubscriptionById,
-} from "@/lib/subscriptions";
+} from "@/lib/db/subscriptions";
 import { Resend } from "resend";
 
 type NewEventInputs = z.infer<typeof NewEventFormDataSchema>;

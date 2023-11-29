@@ -1,4 +1,4 @@
-import prisma from "../../prisma/client";
+import prisma from "../../../prisma/client";
 import { z } from "zod";
 import { AttendanceDataSchema, AttendanceFormDataSchema } from "@/lib/schema";
 
@@ -94,6 +94,16 @@ export const deleteAttendance = async (userId: string, eventId: string) => {
         },
       },
     });
+    return { attendance };
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error deleting attendance.");
+  }
+};
+
+export const deleteAllAttendance = async () => {
+  try {
+    const attendance = await prisma.attendance.deleteMany();
     return { attendance };
   } catch (error) {
     console.error(error);

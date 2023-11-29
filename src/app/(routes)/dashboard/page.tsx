@@ -1,9 +1,7 @@
 import AddIcon from "@mui/icons-material/Add";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { getUserEvents } from "@/lib/events";
+import { getUserEvents } from "@/lib/db/events";
 import { Event } from "@prisma/client";
-import { getTimeFromDate } from "@/lib/utils";
 import EventHandlerDialog from "@/components/EventHandlerDialog";
 import EventCard from "@/app/(routes)/dashboard/EventCard";
 

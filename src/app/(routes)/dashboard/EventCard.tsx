@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { getFormattedDateTime } from "@/lib/utils";
 import { Event } from "@prisma/client";
-import { getEventAttendance } from "@/lib/attendance";
+import { getEventAttendance } from "@/lib/db/attendance";
 
 type EventCardProps = {
   event: Event;

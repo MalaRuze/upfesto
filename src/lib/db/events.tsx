@@ -1,4 +1,4 @@
-import prisma from "../../prisma/client";
+import prisma from "../../../prisma/client";
 import { currentUser } from "@clerk/nextjs";
 import { z } from "zod";
 import { NewEventDataSchema, UpdateEventDataSchema } from "@/lib/schema";
@@ -112,5 +112,16 @@ export const deleteImage = async (eventId: string) => {
   } catch (error) {
     console.error(error);
     throw new Error("Error deleting image.");
+  }
+};
+
+export const deleteAllEvents = async () => {
+  try {
+    const events = await prisma.event.deleteMany();
+    return { events };
+  } catch (error) {
+    console.error(error);
+    console.log(error);
+    throw new Error("Error deleting events.");
   }
 };

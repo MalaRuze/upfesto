@@ -1,4 +1,4 @@
-import prisma from "../../prisma/client";
+import prisma from "../../../prisma/client";
 import { z } from "zod";
 import { PostDataSchema, UpdatePostDataSchema } from "@/lib/schema";
 

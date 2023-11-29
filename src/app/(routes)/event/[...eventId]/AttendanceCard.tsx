@@ -1,4 +1,4 @@
-import { getEventAttendance } from "@/lib/attendance";
+import { getEventAttendance } from "@/lib/db/attendance";
 import { ResponseEnum } from "@prisma/client";
 import {
   Dialog,
