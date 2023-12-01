@@ -3,6 +3,8 @@ import { PostTypeEnum, ResponseEnum } from "@prisma/client";
 
 const timeFormat = /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/;
 
+// Event
+
 export const NewEventFormDataSchema = z.object({
   title: z.string().min(1),
   description: z.string().nullish(),
@@ -71,6 +73,8 @@ export const UpdateEventDataSchema = z.object({
   hostId: z.string(),
 });
 
+// Attendance
+
 export const AttendanceFormDataSchema = z.object({
   eventId: z.string(),
   userId: z.string(),
@@ -83,6 +87,8 @@ export const AttendanceDataSchema = z.object({
   response: z.nativeEnum(ResponseEnum),
 });
 
+// Post
+
 export const PostDataSchema = z.object({
   eventId: z.string(),
   message: z.string().min(5).max(300),
@@ -94,6 +100,8 @@ export const UpdatePostDataSchema = z.object({
   eventId: z.string(),
   message: z.string().min(5).max(300),
 });
+
+// Subscription
 
 export const SubscriptionDataSchema = z.object({
   eventId: z.string(),
