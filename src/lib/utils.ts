@@ -1,6 +1,8 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { isSameDay } from "date-fns";
+import { timezone } from "@/lib/constants";
+import { format } from "date-fns-tz";
 
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
@@ -10,6 +12,11 @@ export const getTimeFromDate = (date: Date): string => {
   const hours = date.getHours().toString().padStart(2, "0");
   const minutes = date.getMinutes().toString().padStart(2, "0");
   return `${hours}:${minutes}`;
+};
+
+export const getCombinedDateTime = (date: Date, time?: string | null) => {
+  const dateString = format(date, "yyyy-MM-dd", { timeZone: timezone });
+  return new Date(`${dateString}T${time}`);
 };
 
 export const getFormattedDateTime = (dateFrom: Date, dateTo?: Date) => {

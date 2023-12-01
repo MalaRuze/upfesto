@@ -1,0 +1,48 @@
+"use server";
+
+import { NewEventFormDataSchema } from "@/lib/schema";
+import { createEvent } from "@/lib/db/events";
+import { createAttendance } from "@/lib/db/attendance";
+import { ResponseEnum } from "@prisma/client";
+import { revalidatePath } from "next/cache";
+import { getCombinedDateTime, getErrorMessage } from "@/lib/utils";
+import { z } from "zod";
+
+type NewEventInputs = z.infer<typeof NewEventFormDataSchema>;
+
+export const createEventAction = async (data: NewEventInputs) => {
+  const validation = NewEventFormDataSchema.safeParse(data);
+  if (!validation.success) {
+    return { success: false, error: validation.error.errors };
+  }
+
+  const dateTimeFrom = getCombinedDateTime(data.dateFrom, data.timeFrom);
+  const dateTimeTo = data.dateTo
+    ? getCombinedDateTime(data.dateTo, data.timeTo)
+    : null;
+
+  try {
+    const { event } = await createEvent({
+      title: data.title,
+      description: data.description,
+      locationAddress: data.locationAddress,
+      locationLat: data.locationLat?.toString(),
+      locationLon: data.locationLon?.toString(),
+      imageUrl: data.imageUrl,
+      dateFrom: dateTimeFrom,
+      dateTo: dateTimeTo,
+      hostId: data.hostId,
+    });
+    if (event) {
+      await createAttendance({
+        eventId: event.id,
+        userId: data.hostId,
+        response: ResponseEnum.YES,
+      });
+    }
+    revalidatePath("/dashboard");
+    return { success: true, event };
+  } catch (error) {
+    return { success: false, error: getErrorMessage(error) };
+  }
+};

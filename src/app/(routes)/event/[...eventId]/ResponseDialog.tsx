@@ -23,13 +23,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { createNewAttendance } from "@/app/_actions";
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
-import Emoji from "a11y-react-emoji";
 import { Check, Meh, X } from "lucide-react";
+import { createAttendanceAction } from "@/actions/createAttendanceAction";
 
 type ResponseDialogProps = {
   currentUserAttendance?: Attendance;
@@ -55,7 +54,7 @@ const ResponseDialog = ({
   const pathname = usePathname();
 
   const onSubmit = async (values: z.infer<typeof AttendanceFormDataSchema>) => {
-    const res = await createNewAttendance(values);
+    const res = await createAttendanceAction(values);
     console.log(values);
     if (res?.success === false) {
       toast({

@@ -12,7 +12,8 @@ import { Event } from "@prisma/client";
 import { cn, getTimeFromDate } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { createEventAction, updateEventAction } from "@/app/_actions";
+import { updateEventAction } from "@/actions/updateEventAction";
+import { createEventAction } from "@/actions/createEventAction";
 import { CalendarIcon } from "lucide-react";
 import {
   Form,
