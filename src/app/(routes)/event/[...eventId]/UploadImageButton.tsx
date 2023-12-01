@@ -10,10 +10,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import EditSharpIcon from "@mui/icons-material/EditSharp";
 import React from "react";
 import Spinner from "@/components/ui/spinner";
 import { useToast } from "@/components/ui/use-toast";
+import { ImagePlus, Pencil } from "lucide-react";
 
 type UploadImageButtonProps = {
   eventId: string;
@@ -27,7 +27,7 @@ const UploadImageButton = ({ eventId, imageUrl }: UploadImageButtonProps) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button className="bg-white/80 hover:bg-white/95 p-2 rounded-xl  ">
-          <EditSharpIcon />
+          <ImagePlus />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="px-2">
