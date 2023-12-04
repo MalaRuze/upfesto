@@ -1,6 +1,6 @@
 "use client";
 
-import { Posts } from "@prisma/client";
+import { Posts, PostTypeEnum } from "@prisma/client";
 import { getFormattedDateTime } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -68,40 +68,43 @@ const PostCard = ({
                 ? getFormattedDateTime(post.dateCreated)
                 : getFormattedDateTime(post.dateCreated) +
                   `  (edited ${getFormattedDateTime(post.dateUpdated)} )`}
+              {post.type === PostTypeEnum.AUTO && " (auto-generated)"}
             </span>
           </div>
         </div>
         {/* more dropdown */}
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <MoreHorizontal className="w-5 h-5 m-2" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {/* edit post */}
-            <DropdownMenuItem asChild>
-              <PostHandlerDialog
-                mode="update"
-                postId={post.id}
-                message={post.message}
-                eventId={post.eventId}
-                trigger={
-                  <div className="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
-                    <Pencil className="h-4 w-4 mr-2" />
-                    <span>Edit post</span>
-                  </div>
-                }
-              />
-            </DropdownMenuItem>
-            {/* delete post */}
-            <DropdownMenuItem
-              className="text-destructive"
-              onClick={() => handleDeletePost(post.id)}
-            >
-              <Trash2 className="h-4 w-4 mr-2" />
-              <span>Delete post</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {post.type === PostTypeEnum.MANUAL && (
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <MoreHorizontal className="w-5 h-5 m-2" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {/* edit post */}
+              <DropdownMenuItem asChild>
+                <PostHandlerDialog
+                  mode="update"
+                  postId={post.id}
+                  message={post.message}
+                  eventId={post.eventId}
+                  trigger={
+                    <div className="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                      <Pencil className="h-4 w-4 mr-2" />
+                      <span>Edit post</span>
+                    </div>
+                  }
+                />
+              </DropdownMenuItem>
+              {/* delete post */}
+              <DropdownMenuItem
+                className="text-destructive"
+                onClick={() => handleDeletePost(post.id)}
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                <span>Delete post</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
       {/* post message */}
       <span className="bg-white p-2 w-full whitespace-pre-wrap rounded-xl text-sm">
