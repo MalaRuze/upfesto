@@ -64,7 +64,7 @@ const PostCard = ({
           <div className="flex flex-col">
             <span className="font-semibold">{hostFullName}</span>
             <span className="text-xs">
-              {post.dateCreated === post.dateUpdated
+              {post.dateCreated.getTime() === post.dateUpdated.getTime()
                 ? getFormattedDateTime(post.dateCreated)
                 : getFormattedDateTime(post.dateCreated) +
                   `  (edited ${getFormattedDateTime(post.dateUpdated)} )`}
