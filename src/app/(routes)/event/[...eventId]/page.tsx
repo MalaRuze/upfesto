@@ -162,14 +162,20 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
           )}
           {/* posts */}
           {posts.length > 0 ? (
-            posts.map((post) => (
-              <PostCard
-                post={post}
-                hostFullName={hostDetails.user?.fullName}
-                hostProfileImageUrl={hostDetails.user?.profileImageUrl}
-                key={post.id}
-              />
-            ))
+            posts
+              .sort(
+                (a, b) =>
+                  new Date(b.dateCreated).getTime() -
+                  new Date(a.dateCreated).getTime(),
+              )
+              .map((post) => (
+                <PostCard
+                  post={post}
+                  hostFullName={hostDetails.user?.fullName}
+                  hostProfileImageUrl={hostDetails.user?.profileImageUrl}
+                  key={post.id}
+                />
+              ))
           ) : (
             <div className="py-12 text-center text-gray-400 hidden sm:block">
               No posts yet
