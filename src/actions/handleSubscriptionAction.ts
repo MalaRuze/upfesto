@@ -1,3 +1,5 @@
+"use server";
+
 import { z } from "zod";
 import { SubscriptionDataSchema } from "@/lib/schema";
 import {

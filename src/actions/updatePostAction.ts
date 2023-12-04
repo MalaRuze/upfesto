@@ -1,3 +1,5 @@
+"use server";
+
 import { UpdatePostDataSchema } from "@/lib/schema";
 import { updatePost } from "@/lib/db/posts";
 import { revalidatePath } from "next/cache";

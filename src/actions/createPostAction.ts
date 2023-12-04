@@ -1,3 +1,5 @@
+"use server";
+
 import { PostDataSchema } from "@/lib/schema";
 import { createPost } from "@/lib/db/posts";
 import { findEventSubscriptions } from "@/lib/db/subscriptions";
