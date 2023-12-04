@@ -3,7 +3,6 @@
 import { UploadButton } from "@/lib/uploadthing";
 import DeleteOutlineSharpIcon from "@mui/icons-material/DeleteOutlineSharp";
 import FileUploadSharpIcon from "@mui/icons-material/FileUploadSharp";
-import { deleteImageFromEvent, handleImageUpload } from "@/app/_actions";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,7 +12,9 @@ import {
 import React from "react";
 import Spinner from "@/components/ui/spinner";
 import { useToast } from "@/components/ui/use-toast";
-import { ImagePlus, Pencil } from "lucide-react";
+import { ImagePlus } from "lucide-react";
+import { addImageAction } from "@/actions/addImageAction";
+import { deleteImageAction } from "@/actions/deleteImageAction";
 
 type UploadImageButtonProps = {
   eventId: string;
@@ -35,7 +36,7 @@ const UploadImageButton = ({ eventId, imageUrl }: UploadImageButtonProps) => {
           endpoint="imageUploader"
           onClientUploadComplete={async (uploadRes) => {
             try {
-              const res = await handleImageUpload(eventId, uploadRes[0].url);
+              const res = await addImageAction(eventId, uploadRes[0].url);
               if (!res) {
                 toast({
                   variant: "destructive",
@@ -103,7 +104,7 @@ const UploadImageButton = ({ eventId, imageUrl }: UploadImageButtonProps) => {
         {imageUrl && (
           <DropdownMenuItem
             className="text-destructive"
-            onClick={async () => await deleteImageFromEvent(eventId)}
+            onClick={async () => await deleteImageAction(eventId)}
           >
             <DeleteOutlineSharpIcon className="mr-2 !h-4 !w-4" />
             <span>Remove Image</span>

@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import React from "react";
-import { deletePostAction } from "@/app/_actions";
+import { deletePostAction } from "@/actions/deletePostAction";
 import { useToast } from "@/components/ui/use-toast";
 import PostHandlerDialog from "@/app/(routes)/event/[...eventId]/PostHandlerDialog";
 

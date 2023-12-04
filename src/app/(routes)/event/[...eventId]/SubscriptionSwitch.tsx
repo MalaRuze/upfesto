@@ -1,6 +1,6 @@
 "use client";
 import { Switch } from "@/components/ui/switch";
-import { handleSubscriptionAction } from "@/app/_actions";
+import { handleSubscriptionAction } from "@/actions/handleSubscriptionAction";
 import { useToast } from "@/components/ui/use-toast";
 import { Label } from "@/components/ui/label";
 import { Info } from "lucide-react";

@@ -25,7 +25,8 @@ import z from "zod";
 import { PostTypeEnum } from "@prisma/client";
 import React, { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
-import { createPostAction, updatePostAction } from "@/app/_actions";
+import { createPostAction } from "@/actions/createPostAction";
+import { updatePostAction } from "@/actions/updatePostAction";
 
 type CreateProps = {
   mode: "create";

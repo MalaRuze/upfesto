@@ -9,7 +9,7 @@ import {
   getFormattedDateTime,
 } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
-import { createPostAction } from "@/app/_actions";
+import { createPostAction } from "@/actions/createPostAction";
 import { z } from "zod";
 
 type UpdateEventInputs = z.infer<typeof UpdateEventFormDataSchema>;
