@@ -25,9 +25,10 @@ export const createEventAction = async (data: NewEventInputs) => {
     const { event } = await createEvent({
       title: data.title,
       description: data.description,
-      locationAddress: data.locationAddress,
-      locationLat: data.locationLat?.toString(),
-      locationLon: data.locationLon?.toString(),
+      locationAddress:
+        data.locationAddress === "" ? null : data.locationAddress,
+      locationLon: data.locationLon?.toString() || null,
+      locationLat: data.locationLat?.toString() || null,
       imageUrl: data.imageUrl,
       dateFrom: dateTimeFrom,
       dateTo: dateTimeTo,
