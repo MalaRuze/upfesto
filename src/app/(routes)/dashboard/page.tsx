@@ -24,9 +24,13 @@ const DashboardPage = async () => {
             </Button>
           }
         />
-        {events?.map((event: Event) => (
-          <EventCard event={event} key={event.id} />
-        ))}
+        {events
+          ?.sort(
+            (a, b) =>
+              new Date(a.dateCreated).getTime() -
+              new Date(b.dateCreated).getTime(),
+          )
+          .map((event: Event) => <EventCard event={event} key={event.id} />)}
       </div>
     </main>
   );
