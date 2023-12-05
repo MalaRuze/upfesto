@@ -273,7 +273,7 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
                             }
                           }}
                           disabled={(date) =>
-                            date < new Date() || date < new Date("1900-01-01")
+                            date < new Date(new Date().setHours(0, 0, 0, 0))
                           }
                           initialFocus
                           ISOWeek
@@ -372,9 +372,8 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
                               field.onChange(date);
                             }}
                             disabled={(date) =>
-                              (date < form.watch("dateFrom") &&
-                                !isSameDay(date, form.watch("dateFrom"))) ||
-                              date < new Date("1900-01-01")
+                              date < form.watch("dateFrom") &&
+                              !isSameDay(date, form.watch("dateFrom"))
                             }
                             initialFocus
                             ISOWeek
