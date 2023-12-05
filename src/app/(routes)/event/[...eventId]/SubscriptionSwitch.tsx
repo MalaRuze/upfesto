@@ -11,6 +11,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 type SubscriptionToggleProps = {
   eventId: string;
@@ -24,10 +26,21 @@ const SubscriptionSwitch = ({
   subscription,
 }: SubscriptionToggleProps) => {
   const { toast } = useToast();
+  const pathname = usePathname();
+
   if (!userId) {
     return (
-      <div>
-        <h1>SubscriptionSwitch</h1>
+      <div className="flex items-center text-center w-full gap-2 border justify-around p-2 rounded-xl text-sm text-gray-500">
+        <h2>
+          Please{" "}
+          <Link
+            href={`/sign-in?redirect_url=` + pathname}
+            className="underline"
+          >
+            sing in
+          </Link>{" "}
+          to allow notifications
+        </h2>
       </div>
     );
   }
