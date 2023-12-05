@@ -21,6 +21,7 @@ import React from "react";
 import PostCard from "@/app/(routes)/event/[...eventId]/PostCard";
 import SubscriptionSwitch from "@/app/(routes)/event/[...eventId]/SubscriptionSwitch";
 import { findSubscriptionById } from "@/lib/db/subscriptions";
+import NotFound from "@/app/(routes)/event/[...eventId]/NotFound";
 
 interface EventPageProps {
   params: {
@@ -30,29 +31,27 @@ interface EventPageProps {
 
 const EventPage = async ({ params: { eventId } }: EventPageProps) => {
   const { event } = await getEventById(eventId[0]);
+
+  if (!event) {
+    return <NotFound />;
+  }
+
   const { posts } = await getEventPosts(eventId[0]);
   const { attendance } = await getEventAttendance(eventId[0]);
   const user = await currentUser();
   const currentUserAttendance = attendance?.find((a) => a.userId === user?.id);
 
-  if (!event) {
-    return <div>Loading ...</div>;
-  }
-
-  const subscription = !user?.id
+  const hostDetails = await getPublicUserInfoById(event.hostId);
+  const isHost = user?.id === event.hostId;
+  const isSubscribed = !user?.id
     ? false
     : Boolean(await findSubscriptionById(user.id, event.id));
-  // check if user is host
-  const isHost = user?.id === event.hostId;
-  // get host details
-  const hostDetails = await getPublicUserInfoById(event.hostId);
-  // get formatted date
-  const formattedDate = getDetailedFormattedDateTime(
+
+  const formattedEventDate = getDetailedFormattedDateTime(
     event.dateFrom,
     event.dateTo !== null ? event.dateTo : undefined,
   );
-  // get location address
-  const locationAddress =
+  const formattedEventLocationAddress =
     event.locationAddress !== null
       ? splitStringAtFirstComma(event.locationAddress)
       : undefined;
@@ -92,7 +91,7 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
           {/* event details card */}
           <div className="bg-gray-100 p-4 rounded-xl text-sm space-y-4 relative">
             <h2 className="text-base font-semibold">Event Details</h2>
-            {/* edit event */}
+            {/* edit event button */}
             {isHost && (
               <EventHandlerDialog
                 mode="update"
@@ -123,25 +122,27 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
               <li className="flex gap-3 items-center">
                 <Calendar size={20} className="flex-shrink-0" />
                 <div>
-                  <span className="font-semibold">{formattedDate?.time}</span>{" "}
-                  {formattedDate?.date}
+                  <span className="font-semibold">
+                    {formattedEventDate?.time}
+                  </span>{" "}
+                  {formattedEventDate?.date}
                 </div>
               </li>
-              {locationAddress && (
+              {formattedEventLocationAddress && (
                 <li className="flex gap-3 items-center">
                   <MapPin size={20} className="flex-shrink-0" />
                   <div className="flex flex-wrap gap-1">
                     <span className="font-semibold">
-                      {locationAddress.firstPart}
+                      {formattedEventLocationAddress.firstPart}
                     </span>
-                    <span>{locationAddress.rest}</span>
+                    <span>{formattedEventLocationAddress.rest}</span>
                   </div>
                 </li>
               )}
             </ul>
             <p className="whitespace-pre-wrap">{event.description}</p>
           </div>
-          {/* create post */}
+          {/* create post button */}
           {user && isHost && (
             <div className="w-full bg-gray-100 flex p-4 items-center rounded-xl gap-4">
               <img
@@ -200,7 +201,7 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
           <SubscriptionSwitch
             eventId={event.id}
             userId={user?.id}
-            subscription={subscription}
+            subscription={isSubscribed}
           />
           {/* location map */}
           {event.locationLat && event.locationLon && (
