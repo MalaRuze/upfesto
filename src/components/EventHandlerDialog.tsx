@@ -275,6 +275,7 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
                           disabled={(date) =>
                             date < new Date(new Date().setHours(0, 0, 0, 0))
                           }
+                          defaultMonth={field.value}
                           initialFocus
                           ISOWeek
                         />
@@ -375,6 +376,7 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
                               date < form.watch("dateFrom") &&
                               !isSameDay(date, form.watch("dateFrom"))
                             }
+                            defaultMonth={field.value ? field.value : undefined}
                             initialFocus
                             ISOWeek
                           />
