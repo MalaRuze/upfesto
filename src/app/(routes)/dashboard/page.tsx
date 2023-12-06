@@ -1,9 +1,9 @@
-import AddIcon from "@mui/icons-material/Add";
 import { Button } from "@/components/ui/button";
 import { getUserEvents } from "@/lib/db/events";
 import { Event } from "@prisma/client";
 import EventHandlerDialog from "@/components/EventHandlerDialog";
 import EventCard from "@/app/(routes)/dashboard/EventCard";
+import { Plus } from "lucide-react";
 
 const DashboardPage = async () => {
   const { events } = await getUserEvents();
@@ -19,7 +19,7 @@ const DashboardPage = async () => {
               className="h-60 flex flex-col items-center justify-around p-20 w-full"
               type="button"
             >
-              <AddIcon className="text-primary" fontSize="large" />
+              <Plus className="text-primary w-8 h-8" />
               <p>Create event</p>
             </Button>
           }

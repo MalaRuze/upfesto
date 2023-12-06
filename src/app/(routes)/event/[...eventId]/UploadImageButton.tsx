@@ -1,8 +1,6 @@
 "use client";
 
 import { UploadButton } from "@/lib/uploadthing";
-import DeleteOutlineSharpIcon from "@mui/icons-material/DeleteOutlineSharp";
-import FileUploadSharpIcon from "@mui/icons-material/FileUploadSharp";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,7 +10,7 @@ import {
 import React from "react";
 import Spinner from "@/components/ui/spinner";
 import { useToast } from "@/components/ui/use-toast";
-import { ImagePlus } from "lucide-react";
+import { ArrowUpFromLine, ImagePlus, Trash2 } from "lucide-react";
 import { addImageAction } from "@/actions/addImageAction";
 import { deleteImageAction } from "@/actions/deleteImageAction";
 
@@ -87,8 +85,8 @@ const UploadImageButton = ({ eventId, imageUrl }: UploadImageButtonProps) => {
                 );
               }
               return ready ? (
-                <div>
-                  <FileUploadSharpIcon className="mr-1 !h-4 !w-4" />{" "}
+                <div className="flex items-center gap-2">
+                  <ArrowUpFromLine className="h-4 w-4" />
                   <span>Upload new image</span>
                 </div>
               ) : (
@@ -103,10 +101,10 @@ const UploadImageButton = ({ eventId, imageUrl }: UploadImageButtonProps) => {
 
         {imageUrl && (
           <DropdownMenuItem
-            className="text-destructive"
+            className="text-destructive flex items-center gap-2"
             onClick={async () => await deleteImageAction(eventId)}
           >
-            <DeleteOutlineSharpIcon className="mr-2 !h-4 !w-4" />
+            <Trash2 className="h-4 w-4" />
             <span>Remove Image</span>
           </DropdownMenuItem>
         )}

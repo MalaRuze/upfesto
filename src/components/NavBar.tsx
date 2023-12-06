@@ -2,10 +2,6 @@
 
 import Link from "next/link";
 import React from "react";
-import MenuIcon from "@mui/icons-material/Menu";
-import LogoutIcon from "@mui/icons-material/Logout";
-import CloseIcon from "@mui/icons-material/Close";
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { Button } from "@/components/ui/button";
 import {
   Collapsible,
@@ -23,6 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
+import { Menu, X, User, LogOut } from "lucide-react";
 
 const NavBar = () => {
   /* mobile menu state */
@@ -52,11 +49,7 @@ const NavBar = () => {
         <CollapsibleTrigger asChild>
           {/*mobile menu trigger*/}
           <Button variant="ghost" size="sm" className="w-9 p-0 sm:hidden">
-            {isOpen ? (
-              <CloseIcon className="h-4 w-4" />
-            ) : (
-              <MenuIcon className="h-4 w-4" />
-            )}
+            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             <span className="sr-only">Toggle</span>
           </Button>
         </CollapsibleTrigger>
@@ -112,16 +105,20 @@ const NavBar = () => {
                 <DropdownMenuSeparator />
                 {/* profile settings */}
                 <DropdownMenuItem>
-                  <Link href="/profile-settings">
-                    <PersonOutlineIcon className="mr-2 !h-4 !w-4" />
+                  <Link
+                    href="/profile-settings"
+                    className="flex items-center gap-2"
+                  >
+                    <User className="h-4 w-4" />
                     <span>Profile Settings</span>
                   </Link>
                 </DropdownMenuItem>
                 {/* logout */}
                 <DropdownMenuItem
                   onClick={() => signOut(() => router.push("/"))}
+                  className="flex items-center gap-2"
                 >
-                  <LogoutIcon className="mr-2 !h-4 !w-4" />
+                  <LogOut className="h-4 w-4" />
                   <span>Log Out</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>

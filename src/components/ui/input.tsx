@@ -21,10 +21,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {...props}
         />
         {props.icon && (
-          <div className="absolute right-3 top-1.5">
+          <div className="absolute right-3 top-2.5">
             {React.cloneElement(props.icon, {
-              fontSize: "small",
-              className: "text-black/30",
+              className: "text-black/40 h-5 w-5",
             })}
           </div>
         )}

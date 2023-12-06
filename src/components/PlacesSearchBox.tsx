@@ -9,8 +9,8 @@ import { useRef, useState } from "react";
 import { FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import PlaceIcon from "@mui/icons-material/Place";
 import { useToast } from "@/components/ui/use-toast";
+import { MapPin } from "lucide-react";
 
 type PlacesSearchBoxProps = {
   onSelectAddress: (
@@ -109,7 +109,7 @@ const ReadySearchBox = ({
       {/* Input */}
       <Input
         placeholder="Add location"
-        icon={<PlaceIcon />}
+        icon={<MapPin />}
         value={value}
         disabled={!ready}
         onChange={handleChange}
