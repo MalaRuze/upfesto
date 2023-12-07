@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  AdvancedMarker,
-  APIProvider,
-  Map,
-  Pin,
-} from "@vis.gl/react-google-maps";
+import { Marker, APIProvider, Map } from "@vis.gl/react-google-maps";
 
 type LocationMapProps = {
   lat: number;
@@ -23,9 +18,7 @@ const LocationMap = ({ lat, lng }: LocationMapProps) => {
           disableDefaultUI
           style={{ borderRadius: "1rem" }}
         >
-          <AdvancedMarker position={position}>
-            <Pin />
-          </AdvancedMarker>
+          <Marker position={position} />
         </Map>
       </div>
     </APIProvider>
