@@ -1,27 +1,27 @@
+import React from "react";
+import { currentUser } from "@clerk/nextjs";
+import { Calendar, MapPin, Pencil, User2 } from "lucide-react";
 import { getEventById } from "@/lib/db/events";
 import { getEventAttendance } from "@/lib/db/attendance";
-import { currentUser } from "@clerk/nextjs";
-import ResponseDialog from "@/app/(routes)/event/[...eventId]/ResponseDialog";
-import UploadImageButton from "@/app/(routes)/event/[...eventId]/UploadImageButton";
-import { Calendar, MapPin, Pencil, User2 } from "lucide-react";
+import { getEventPosts } from "@/lib/db/posts";
+import { findSubscriptionById } from "@/lib/db/subscriptions";
 import { getPublicUserInfoById } from "@/lib/db/users";
 import {
   getDetailedFormattedDateTime,
   splitStringAtFirstComma,
 } from "@/lib/utils";
-import AttendanceCard from "@/app/(routes)/event/[...eventId]/AttendanceCard";
 import { Button } from "@/components/ui/button";
-import ShareDialog from "@/app/(routes)/event/[...eventId]/ShareDialog";
-import CalendarButton from "@/app/(routes)/event/[...eventId]/CalendarButton";
-import LocationMap from "@/app/(routes)/event/[...eventId]/LocationMap";
 import EventHandlerDialog from "@/components/EventHandlerDialog";
-import PostHandlerDialog from "@/app/(routes)/event/[...eventId]/PostHandlerDialog";
-import { getEventPosts } from "@/lib/db/posts";
-import React from "react";
-import PostCard from "@/app/(routes)/event/[...eventId]/PostCard";
-import SubscriptionSwitch from "@/app/(routes)/event/[...eventId]/SubscriptionSwitch";
-import { findSubscriptionById } from "@/lib/db/subscriptions";
-import NotFound from "@/app/(routes)/event/[...eventId]/NotFound";
+import NotFound from "./NotFound";
+import SubscriptionSwitch from "./SubscriptionSwitch";
+import PostCard from "./PostCard";
+import PostHandlerDialog from "./PostHandlerDialog";
+import ShareDialog from "./ShareDialog";
+import CalendarButton from "./CalendarButton";
+import LocationMap from "./LocationMap";
+import AttendanceCard from "./AttendanceCard";
+import ResponseDialog from "./ResponseDialog";
+import UploadImageButton from "./UploadImageButton";
 
 interface EventPageProps {
   params: {
@@ -40,13 +40,11 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
   const { attendance } = await getEventAttendance(eventId[0]);
   const user = await currentUser();
   const currentUserAttendance = attendance?.find((a) => a.userId === user?.id);
-
   const hostDetails = await getPublicUserInfoById(event.hostId);
   const isHost = user?.id === event.hostId;
   const isSubscribed = !user?.id
     ? false
     : Boolean(await findSubscriptionById(user.id, event.id));
-
   const formattedEventDate = getDetailedFormattedDateTime(
     event.dateFrom,
     event.dateTo !== null ? event.dateTo : undefined,
@@ -72,7 +70,7 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
             <UploadImageButton eventId={event.id} imageUrl={event.imageUrl} />
           </div>
         )}
-        {/* date short */}
+        {/* date */}
         <div className="absolute w-20 h-20 bg-white/80 bottom-4 left-4 rounded-xl p-2 flex flex-col justify-between">
           {/* month */}
           <p className="text-center">
@@ -87,8 +85,8 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
       {/* event title */}
       <h1 className="text-4xl p-4 w-full truncate">{event?.title}</h1>
       <div className="grid grid-cols-1 sm:grid-cols-5 gap-y-4 sm:gap-x-8 px-4 sm:px-0">
-        <div className="col-span-3 space-y-4">
-          {/* event details card */}
+        {/* event detail section */}
+        <div className="sm:col-span-3">
           <div className="bg-gray-100 p-4 rounded-xl text-sm space-y-4 relative">
             <h2 className="text-base font-semibold">Event Details</h2>
             {/* edit event button */}
@@ -142,6 +140,33 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
             </ul>
             <p className="whitespace-pre-wrap">{event.description}</p>
           </div>
+        </div>
+        {/* attendance section */}
+        <div className="sm:col-span-2 sm:row-span-2 space-y-4">
+          <AttendanceCard eventId={event.id} hostId={event.hostId} />
+          <ResponseDialog
+            eventId={event.id}
+            userId={user?.id}
+            currentUserAttendance={currentUserAttendance}
+          />
+          <div className="w-full grid grid-cols-2 gap-4">
+            <ShareDialog />
+            <CalendarButton event={event} />
+          </div>
+          <SubscriptionSwitch
+            eventId={event.id}
+            userId={user?.id}
+            subscription={isSubscribed}
+          />
+          {event.locationLat && event.locationLon && (
+            <LocationMap
+              lat={Number(event.locationLat)}
+              lng={Number(event.locationLon)}
+            />
+          )}
+        </div>
+        {/* Posts section */}
+        <div className=" sm:col-span-3 space-y-4">
           {/* create post button */}
           {user && isHost && (
             <div className="w-full bg-gray-100 flex p-4 items-center rounded-xl gap-4">
@@ -181,34 +206,6 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
             <div className="py-12 text-center text-gray-400 hidden sm:block">
               No posts yet
             </div>
-          )}
-        </div>
-        <div className="col-span-2 space-y-4">
-          {/* attendance card */}
-          <AttendanceCard eventId={event.id} hostId={event.hostId} />
-          {/* response button */}
-          <ResponseDialog
-            eventId={event.id}
-            userId={user?.id}
-            currentUserAttendance={currentUserAttendance}
-          />
-          <div className="w-full grid grid-cols-2 gap-4">
-            {/* share button */}
-            <ShareDialog />
-            {/* add to calendar button */}
-            <CalendarButton event={event} />
-          </div>
-          <SubscriptionSwitch
-            eventId={event.id}
-            userId={user?.id}
-            subscription={isSubscribed}
-          />
-          {/* location map */}
-          {event.locationLat && event.locationLon && (
-            <LocationMap
-              lat={Number(event.locationLat)}
-              lng={Number(event.locationLon)}
-            />
           )}
         </div>
       </div>
