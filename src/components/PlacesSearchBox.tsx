@@ -71,7 +71,6 @@ const ReadySearchBox = ({
 
   // handle suggestion select
   const handleSelect = async (address: string) => {
-    console.log(address);
     setValue(address, false);
     clearSuggestions();
     try {

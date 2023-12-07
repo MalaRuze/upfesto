@@ -20,7 +20,7 @@ model Event {
   dateUpdated     DateTime        @updatedAt
   dateFrom        DateTime
   dateTo          DateTime?
-  host            User            @relation(fields: [hostId], references: [id])
+  host            User            @relation(fields: [hostId], references: [id], onDelete: Cascade)
   hostId          String
   Attendances     Attendance[]
   Posts           Posts[]
@@ -43,9 +43,9 @@ model User {
 
 model Attendance {
   userId   String
-  user     User         @relation(fields: [userId], references: [id])
+  user     User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   eventId  String
-  event    Event        @relation(fields: [eventId], references: [id])
+  event    Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
   response ResponseEnum
 
   @@id([userId, eventId])
@@ -56,7 +56,7 @@ model Attendance {
 model Posts {
   id          String       @id @default(uuid())
   eventId     String
-  event       Event        @relation(fields: [eventId], references: [id])
+  event       Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
   message     String
   type        PostTypeEnum
   dateCreated DateTime     @default(now())
@@ -67,9 +67,9 @@ model Posts {
 
 model Subscribtions {
   userId      String
-  user        User     @relation(fields: [userId], references: [id])
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   eventId     String
-  event       Event    @relation(fields: [eventId], references: [id])
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
   dateUpdated DateTime @updatedAt
 
   @@id([userId, eventId])

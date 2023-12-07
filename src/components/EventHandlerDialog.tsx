@@ -52,6 +52,18 @@ import {
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import PlacesSearchBox from "@/components/PlacesSearchBox";
+import deleteEventAction from "@/actions/deleteEventAction";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 type CreateProps = {
   mode: "create";
@@ -176,6 +188,32 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
     setIsDialogOpen(false);
     // redirect to new event page
     router.push(`/event/${res.event?.id}`);
+  };
+
+  const onDelete = async () => {
+    if (props.mode !== "update") return;
+    const res = await deleteEventAction(props.event.id);
+    if (!res) {
+      toast({
+        title: "Something went wrong",
+        description: "Please try again later",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (res.success === false) {
+      toast({
+        title: "Something went wrong",
+        description: res.error + " Please try again later.",
+        variant: "destructive",
+      });
+      return;
+    }
+    toast({
+      title: "Event deleted",
+      description: "Your event has been deleted.",
+    });
+    router.push("/dashboard");
   };
 
   return (
@@ -500,6 +538,34 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
             />
             {/*Dialog Footer with Submit Button*/}
             <DialogFooter>
+              {props.mode === "update" && (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="destructive" type="button">
+                      Delete Event
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Confirm delete</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Are you sure you want to delete this event? This action
+                        cannot be undone.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <Button
+                        variant="destructive"
+                        type="button"
+                        onClick={() => onDelete()}
+                      >
+                        Delete Event
+                      </Button>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )}
               <Button type="submit">
                 {props.mode === "create" ? "Create event" : "Save changes"}
               </Button>

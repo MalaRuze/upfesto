@@ -115,13 +115,16 @@ export const deleteImage = async (eventId: string) => {
   }
 };
 
-export const deleteAllEvents = async () => {
+export const deleteEvent = async (eventId: string) => {
   try {
-    const events = await prisma.event.deleteMany();
-    return { events };
+    const event = await prisma.event.delete({
+      where: {
+        id: eventId,
+      },
+    });
+    return { event };
   } catch (error) {
     console.error(error);
-    console.log(error);
-    throw new Error("Error deleting events.");
+    throw new Error("Error deleting event.");
   }
 };
