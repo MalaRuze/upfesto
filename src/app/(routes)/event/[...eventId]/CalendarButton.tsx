@@ -32,7 +32,7 @@ const CalendarButton = ({ event }: CalendarButtonProps) => {
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="w-full font-semibold">
           <CalendarPlus size={20} className="mr-2 flex-shrink-0 " />
-          Add to calendar
+          <span className="truncate">Add to calendar</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-52">
