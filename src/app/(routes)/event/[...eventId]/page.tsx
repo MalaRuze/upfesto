@@ -159,7 +159,7 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
             userId={user?.id}
             subscription={isSubscribed}
           />
-          {event.locationLat && event.locationLon && (
+          {event.locationLat !== null && event.locationLon !== null && (
             <LocationMap
               lat={Number(event.locationLat)}
               lng={Number(event.locationLon)}
