@@ -130,7 +130,7 @@ const ReadySearchBox = ({
                 handleSelect(description);
               }}
             >
-              {description}
+              <span className="truncate">{description}</span>
             </Button>
           ))}
         </div>
