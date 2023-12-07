@@ -18,11 +18,13 @@ type PostCardProps = {
   post: Posts;
   hostFullName?: string;
   hostProfileImageUrl?: string;
+  isHost: boolean;
 };
 const PostCard = ({
   post,
   hostFullName,
   hostProfileImageUrl,
+  isHost,
 }: PostCardProps) => {
   const { toast } = useToast();
   const handleDeletePost = async (postId: string) => {
@@ -73,7 +75,7 @@ const PostCard = ({
           </div>
         </div>
         {/* more dropdown */}
-        {post.type === PostTypeEnum.MANUAL && (
+        {post.type === PostTypeEnum.MANUAL && isHost && (
           <DropdownMenu>
             <DropdownMenuTrigger>
               <MoreHorizontal className="w-5 h-5 m-2" />

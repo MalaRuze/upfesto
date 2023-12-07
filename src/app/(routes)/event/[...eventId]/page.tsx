@@ -142,7 +142,7 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
           </div>
         </div>
         {/* attendance section */}
-        <div className="sm:col-span-2 sm:row-span-2 space-y-4">
+        <div className="sm:col-span-2 sm:row-span-3 space-y-4">
           <AttendanceCard eventId={event.id} hostId={event.hostId} />
           <ResponseDialog
             eventId={event.id}
@@ -200,6 +200,7 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
                   hostFullName={hostDetails.user?.fullName}
                   hostProfileImageUrl={hostDetails.user?.profileImageUrl}
                   key={post.id}
+                  isHost={isHost}
                 />
               ))
           ) : (
