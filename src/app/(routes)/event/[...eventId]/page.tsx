@@ -96,9 +96,10 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
                 trigger={
                   <Button
                     variant="outline"
-                    className="flex gap-2 absolute right-2 -top-2"
+                    className="flex gap-2 absolute right-3 -top-1"
+                    size="sm"
                   >
-                    <Pencil /> Edit
+                    <Pencil className="h-4 w-4" /> Edit
                   </Button>
                 }
                 event={event}
