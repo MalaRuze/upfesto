@@ -24,7 +24,7 @@ const EventCard = async ({ event }: EventCardProps) => {
     <Link href={`/event/${event.id}`}>
       <Button
         variant="outline"
-        className="h-60 grid grid-rows-5 w-full p-0 justify-normal"
+        className="h-60 grid grid-rows-5 w-full p-0 justify-normal truncate"
       >
         {/* Image */}
         <div className="bg-gradient-to-bl from-indigo-400 to-sky-100 w-full h-full rounded-t-xl row-span-3">
@@ -39,7 +39,7 @@ const EventCard = async ({ event }: EventCardProps) => {
         {/* Event info */}
         <div className="row-span-2 w-full h-full flex flex-col items-start justify-around p-3">
           <p className="text-gray-500">{formattedDateTime}</p>
-          <h2 className="text-lg font-bold">{event.title}</h2>
+          <h2 className="text-lg font-bold ">{event.title}</h2>
           <div className="text-gray-500">
             {totalAttendance} <span>reacted - </span>
             {yesAttendance} <span>going</span>
