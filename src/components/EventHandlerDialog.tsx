@@ -158,8 +158,12 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
     // create new event or update existing event
     const res =
       props.mode === "create"
-        ? await createEventAction(values)
-        : await updateEventAction({ ...values, id: props.event.id });
+        ? await createEventAction(
+            values as z.infer<typeof NewEventFormDataSchema>,
+          )
+        : await updateEventAction(
+            values as z.infer<typeof UpdateEventFormDataSchema>,
+          );
 
     if (!res) {
       toast({
