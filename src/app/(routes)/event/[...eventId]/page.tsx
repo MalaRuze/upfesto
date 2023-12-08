@@ -83,7 +83,7 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
         </div>
       </div>
       {/* event title */}
-      <h1 className="text-4xl p-4 w-full truncate">{event?.title}</h1>
+      <h1 className="text-4xl p-4 w-full break-words">{event?.title}</h1>
       <div className="grid grid-cols-1 sm:grid-cols-5 gap-y-4 sm:gap-x-8 px-4 sm:px-0">
         {/* event detail section */}
         <div className="sm:col-span-3">
