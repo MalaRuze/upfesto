@@ -254,7 +254,11 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
                 <FormItem>
                   <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <Input placeholder="Type in title" {...field} />
+                    <Input
+                      placeholder="Type in title"
+                      {...field}
+                      maxLength={50}
+                    />
                   </FormControl>
                   <FormMessage>
                     {form.formState.errors.title?.message}
