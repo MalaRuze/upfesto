@@ -1,37 +1,53 @@
+import { getUserCreatedEvents, getuserReactedEvents } from "@/lib/db/events";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import EventsList from "@/app/(routes)/dashboard/EventsList";
 import { Button } from "@/components/ui/button";
-import { getUserEvents } from "@/lib/db/events";
-import { Event } from "@prisma/client";
-import EventHandlerDialog from "@/components/EventHandlerDialog";
-import EventCard from "@/app/(routes)/dashboard/EventCard";
 import { Plus } from "lucide-react";
+import EventHandlerDialog from "@/components/EventHandlerDialog";
 
 const DashboardPage = async () => {
-  const { events } = await getUserEvents();
+  const { events: eventsCreated } = await getUserCreatedEvents();
+  const { events: eventsReacted } = await getuserReactedEvents();
+
   return (
     <main className="flex min-h-screen max-w-screen-xl mx-auto flex-col px-6 pt-8">
-      <h1 className="text-2xl font-semibold pb-4">Events</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        <EventHandlerDialog
-          mode="create"
-          trigger={
-            <Button
-              variant="outline"
-              className="h-60 flex flex-col items-center justify-around p-20 w-full"
-              type="button"
-            >
-              <Plus className="text-primary w-8 h-8" />
-              <p>Create event</p>
-            </Button>
-          }
-        />
-        {events
-          ?.sort(
-            (a, b) =>
-              new Date(a.dateCreated).getTime() -
-              new Date(b.dateCreated).getTime(),
-          )
-          .map((event: Event) => <EventCard event={event} key={event.id} />)}
-      </div>
+      <h1 className="text-2xl font-semibold pb-4">My Events</h1>
+      <Tabs defaultValue="created">
+        <TabsList className="grid w-full sm:w-fit grid-cols-2 mb-4">
+          <TabsTrigger value="created">Created</TabsTrigger>
+          <TabsTrigger value="reacted">Reacted</TabsTrigger>
+        </TabsList>
+        <TabsContent value="created">
+          {eventsCreated.length === 0 ? (
+            <div className="w-full text-center mt-20">
+              <div>You have not created any events yet.</div>
+              <EventHandlerDialog
+                mode="create"
+                trigger={
+                  <Button
+                    className="h-10 flex gap-2 mx-auto mt-4"
+                    type="button"
+                  >
+                    <Plus className="w-5 h-5" />
+                    <p>Create new event</p>
+                  </Button>
+                }
+              />
+            </div>
+          ) : (
+            <EventsList events={eventsCreated} type="created" />
+          )}
+        </TabsContent>
+        <TabsContent value="reacted">
+          {eventsReacted.length === 0 ? (
+            <div className="w-full text-center mt-20">
+              You have not reacted to any other user event.
+            </div>
+          ) : (
+            <EventsList events={eventsReacted} type="reacted" />
+          )}
+        </TabsContent>
+      </Tabs>
     </main>
   );
 };

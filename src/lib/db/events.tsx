@@ -33,6 +33,49 @@ export const getEventById = async (eventId: string) => {
   }
 };
 
+export const getUserCreatedEvents = async () => {
+  const user = await currentUser();
+  try {
+    const events = await prisma.event.findMany({
+      where: {
+        hostId: user?.id,
+      },
+      include: {
+        attendances: true,
+      },
+    });
+    return { events };
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error fetching events.");
+  }
+};
+
+export const getuserReactedEvents = async () => {
+  const user = await currentUser();
+  try {
+    const events = await prisma.event.findMany({
+      where: {
+        NOT: {
+          hostId: user?.id,
+        },
+        attendances: {
+          some: {
+            userId: user?.id,
+          },
+        },
+      },
+      include: {
+        attendances: true,
+      },
+    });
+    return { events };
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error fetching events.");
+  }
+};
+
 export const createEvent = async (data: z.infer<typeof NewEventDataSchema>) => {
   try {
     const event = await prisma.event.create({

@@ -22,9 +22,9 @@ model Event {
   dateTo          DateTime?
   host            User            @relation(fields: [hostId], references: [id], onDelete: Cascade)
   hostId          String
-  Attendances     Attendance[]
-  Posts           Posts[]
-  Subscribers     Subscribtions[]
+  attendances     Attendance[]
+  posts           Posts[]
+  subscribers     Subscribtions[]
 
   @@index([hostId])
 }
@@ -37,8 +37,8 @@ model User {
   email           String          @unique
   profileImageUrl String
   eventsHosted    Event[]
-  Attendances     Attendance[]
-  Subscribers     Subscribtions[]
+  attendances     Attendance[]
+  subscribers     Subscribtions[]
 }
 
 model Attendance {
