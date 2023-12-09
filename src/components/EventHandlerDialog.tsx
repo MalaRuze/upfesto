@@ -545,7 +545,7 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
               )}
             />
             {/*Dialog Footer with Submit Button*/}
-            <DialogFooter>
+            <DialogFooter className="flex gap-3">
               {props.mode === "update" && (
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
