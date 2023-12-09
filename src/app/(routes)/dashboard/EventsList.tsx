@@ -58,7 +58,11 @@ const EventsList = ({ events, type }: EventsListProps) => {
             <Label>Order:</Label>
             <SelectValue placeholder="Date" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent
+            ref={(ref) =>
+              ref?.addEventListener("touchend", (e) => e.preventDefault())
+            }
+          >
             <SelectItem value="ascending">Ascending</SelectItem>
             <SelectItem value="descending">Descending</SelectItem>
           </SelectContent>
@@ -68,7 +72,11 @@ const EventsList = ({ events, type }: EventsListProps) => {
             <Label>Show:</Label>
             <SelectValue placeholder="Show" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent
+            ref={(ref) =>
+              ref?.addEventListener("touchend", (e) => e.preventDefault())
+            }
+          >
             <SelectItem value="all">All</SelectItem>
             <SelectItem value="past">Past</SelectItem>
             <SelectItem value="upcoming">Upcoming</SelectItem>
