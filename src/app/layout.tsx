@@ -31,13 +31,13 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         signIn: {
           elements: {
             rootBox: "relative h-[80vh]",
-            card: "w-full max-w-md sm:absolute sm:top-1/2 sm:left-1/2 sm:transform sm:-translate-y-1/2 sm:-translate-x-1/2",
+            card: "w-full max-w-[500px] sm:absolute sm:top-1/2 sm:left-1/2 sm:transform sm:-translate-y-1/2 sm:-translate-x-1/2",
           },
         },
         signUp: {
           elements: {
             rootBox: "relative h-[80vh]",
-            card: "w-full max-w-md sm:absolute sm:top-1/2 sm:left-1/2 sm:transform sm:-translate-y-1/2 sm:-translate-x-1/2",
+            card: "w-full max-w-[500px] sm:absolute sm:top-1/2 sm:left-1/2 sm:transform sm:-translate-y-1/2 sm:-translate-x-1/2",
           },
         },
       }}
