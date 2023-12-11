@@ -4,6 +4,7 @@ import "./globals.css";
 import NavBar from "@/components/NavBar";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/toaster";
+import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -47,6 +48,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
           <NavBar />
           {children}
           <Toaster />
+          <Footer />
         </body>
       </html>
     </ClerkProvider>
