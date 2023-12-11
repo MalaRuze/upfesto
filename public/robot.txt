@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /event/*
+Disallow: /dashboard
+Disallow: /profile-settings
