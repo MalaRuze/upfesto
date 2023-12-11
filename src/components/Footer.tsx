@@ -23,7 +23,7 @@ const Footer = () => {
           <Link href="/">
             <img src="/logo_dark.png" alt="logo" className="h-7 " />
           </Link>
-          <p>Created by Vojtech Ruzicka</p>
+          <p>Created by Vojtěch Růžička</p>
           <div className="flex gap-2 mt-1">
             <a href="https://www.linkedin.com/in/vojtech-ruzicka/">
               <img src="/linkedin_icon.svg" alt="linkedin" className="h-5" />
