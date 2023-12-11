@@ -1,7 +1,7 @@
 import { WebhookEvent } from "@clerk/backend";
 import { headers } from "next/headers";
 import { Webhook } from "svix";
-import axios from "axios";
+import { createUser, deleteUser, updateUser } from "@/lib/db/users";
 
 const webhookSecret = process.env.CLERK_WEBHOOK_SECRET || ``;
 
@@ -41,7 +41,7 @@ const handler = async (request: Request) => {
           email: payload.data.email_addresses[0].email_address,
           profileImageUrl: payload.data.profile_image_url,
         };
-        await axios.post("http://localhost:3000/api/users", newUserData);
+        await createUser(newUserData);
         break;
       }
       case UserEventType.UPDATED: {
@@ -53,16 +53,11 @@ const handler = async (request: Request) => {
           email: payload.data.email_addresses[0].email_address,
           profileImageUrl: payload.data.profile_image_url,
         };
-        await axios.put(`api/user/${payload.data.id}`, updatedUserData);
+        await updateUser(updatedUserData);
         break;
       }
       case UserEventType.DELETED: {
-        const deletedUserData = {
-          id: payload.data.id,
-        };
-        await axios.delete(`api/user/${payload.data.id}`, {
-          data: deletedUserData,
-        });
+        await deleteUser(payload.data.id!);
         break;
       }
     }
@@ -70,7 +65,6 @@ const handler = async (request: Request) => {
     return Response.json({ message: "Received" }, { status: 200 });
   } catch (e) {
     // something went wrong
-    // no changes were made to the database
     return Response.error();
   }
 };

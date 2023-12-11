@@ -107,3 +107,14 @@ export const SubscriptionDataSchema = z.object({
   eventId: z.string(),
   userId: z.string(),
 });
+
+// User
+
+export const UserDataSchema = z.object({
+  id: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
+  fullName: z.string(),
+  email: z.string().email(),
+  profileImageUrl: z.string().url(),
+});
