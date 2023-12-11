@@ -55,7 +55,6 @@ const ResponseDialog = ({
 
   const onSubmit = async (values: z.infer<typeof AttendanceFormDataSchema>) => {
     const res = await createAttendanceAction(values);
-    console.log(values);
     if (res?.success === false) {
       toast({
         title: "Something went wrong",
