@@ -46,7 +46,6 @@ export const deletePost = async (postId: string) => {
     });
     return { post };
   } catch (error) {
-    console.log(error);
     console.error(error);
     throw new Error("Error deleting post.");
   }

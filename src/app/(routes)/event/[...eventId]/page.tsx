@@ -29,6 +29,35 @@ interface EventPageProps {
   };
 }
 
+export const generateMetadata = async ({
+  params: { eventId },
+}: EventPageProps) => {
+  const { event } = await getEventById(eventId[0]);
+
+  if (!event) {
+    return {
+      title: "Event not found | Upfesto",
+    };
+  }
+
+  return {
+    title: `${event.title} | Upfesto`,
+    openGraph: {
+      title: `${event.title} | Upfesto`,
+      url: `https://upfesto.com/event/${event.id}`,
+      type: "website",
+      images: [
+        {
+          url: event.imageUrl,
+          width: 800,
+          height: 600,
+          alt: event.title,
+        },
+      ],
+    },
+  };
+};
+
 const EventPage = async ({ params: { eventId } }: EventPageProps) => {
   const { event } = await getEventById(eventId[0]);
 

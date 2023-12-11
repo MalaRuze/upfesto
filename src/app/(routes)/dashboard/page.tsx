@@ -4,6 +4,11 @@ import EventsList from "@/app/(routes)/dashboard/EventsList";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import EventHandlerDialog from "@/components/EventHandlerDialog";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard | Upfesto",
+};
 
 const DashboardPage = async () => {
   const { events: eventsCreated } = await getUserCreatedEvents();
