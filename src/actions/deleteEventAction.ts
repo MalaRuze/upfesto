@@ -1,8 +1,8 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { deleteEvent } from "@/lib/db/events";
 import { getErrorMessage } from "@/lib/utils";
+import { revalidatePath } from "next/cache";
 
 const deleteEventAction = async (id: string) => {
   try {

@@ -1,8 +1,8 @@
 "use server";
 
 import { deletePost } from "@/lib/db/posts";
-import { revalidatePath } from "next/cache";
 import { getErrorMessage } from "@/lib/utils";
+import { revalidatePath } from "next/cache";
 
 export const deletePostAction = async (postId: string) => {
   try {

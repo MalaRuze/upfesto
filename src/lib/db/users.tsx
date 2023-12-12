@@ -1,6 +1,6 @@
-import prisma from "../../../prisma/client";
-import { z } from "zod";
 import { UserDataSchema } from "@/lib/schema";
+import prisma from "@/prisma/client";
+import { z } from "zod";
 
 export const getPublicUserInfoById = async (userId: string) => {
   try {

@@ -1,9 +1,9 @@
 "use server";
 
-import { UpdatePostDataSchema } from "@/lib/schema";
 import { updatePost } from "@/lib/db/posts";
-import { revalidatePath } from "next/cache";
+import { UpdatePostDataSchema } from "@/lib/schema";
 import { getErrorMessage } from "@/lib/utils";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 type UpdatePostInputs = z.infer<typeof UpdatePostDataSchema>;

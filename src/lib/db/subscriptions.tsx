@@ -1,4 +1,4 @@
-import prisma from "../../../prisma/client";
+import prisma from "@/prisma/client";
 
 export const createSubscription = async (userId: string, eventId: string) => {
   try {

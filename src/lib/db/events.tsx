@@ -1,7 +1,7 @@
-import prisma from "../../../prisma/client";
+import { NewEventDataSchema, UpdateEventDataSchema } from "@/lib/schema";
+import prisma from "@/prisma/client";
 import { currentUser } from "@clerk/nextjs";
 import { z } from "zod";
-import { NewEventDataSchema, UpdateEventDataSchema } from "@/lib/schema";
 
 export const getUserEvents = async () => {
   const user = await currentUser();

@@ -1,5 +1,5 @@
-import { z } from "zod";
 import { PostTypeEnum, ResponseEnum } from "@prisma/client";
+import { z } from "zod";
 
 const timeFormat = /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/;
 

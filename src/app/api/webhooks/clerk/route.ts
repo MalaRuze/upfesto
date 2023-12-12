@@ -1,7 +1,7 @@
+import { createUser, deleteUser, updateUser } from "@/lib/db/users";
 import { WebhookEvent } from "@clerk/backend";
 import { headers } from "next/headers";
 import { Webhook } from "svix";
-import { createUser, deleteUser, updateUser } from "@/lib/db/users";
 
 const webhookSecret = process.env.CLERK_WEBHOOK_SECRET || ``;
 

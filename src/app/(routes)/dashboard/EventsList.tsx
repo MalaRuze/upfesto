@@ -1,4 +1,9 @@
 "use client";
+
+import EventCard from "@/app/(routes)/dashboard/EventCard";
+import EventHandlerDialog from "@/components/EventHandlerDialog";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -6,13 +11,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import EventHandlerDialog from "@/components/EventHandlerDialog";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
 import { Attendance, Event } from "@prisma/client";
-import EventCard from "@/app/(routes)/dashboard/EventCard";
+import { Plus } from "lucide-react";
 import { useState } from "react";
-import { Label } from "@/components/ui/label";
 
 type EventWithAttendance = Event & {
   attendances: Attendance[];
@@ -49,7 +50,7 @@ const EventsList = ({ events, type }: EventsListProps) => {
 
   return (
     <>
-      <div className="flex flex-col min-[450px]:flex-row gap-2 w-full justify-end sm:-mt-14 mb-4">
+      <div className="mb-4 flex w-full flex-col justify-end gap-2 min-[450px]:flex-row sm:-mt-14">
         <Select
           value={sortOrder}
           onValueChange={(value) => setSortOrder(value)}
@@ -83,17 +84,17 @@ const EventsList = ({ events, type }: EventsListProps) => {
           </SelectContent>
         </Select>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
+      <div className="grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {type === "created" && (
           <EventHandlerDialog
             mode="create"
             trigger={
               <Button
                 variant="outline"
-                className="h-60 flex flex-col items-center justify-around p-20 w-full"
+                className="flex h-60 w-full flex-col items-center justify-around p-20"
                 type="button"
               >
-                <Plus className="text-primary w-8 h-8" />
+                <Plus className="h-8 w-8 text-primary" />
                 <p>Create event</p>
               </Button>
             }

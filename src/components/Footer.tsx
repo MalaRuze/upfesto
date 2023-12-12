@@ -3,8 +3,8 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="bg-black text-white text-sm w-full py-8 px-4">
-      <div className="max-w-screen-xl mx-auto flex justify-between ">
+    <footer className="w-full bg-black px-4 py-8 text-sm text-white">
+      <div className="mx-auto flex max-w-screen-xl justify-between ">
         <ul>
           <li>
             <Link href="/">Home</Link>
@@ -24,7 +24,7 @@ const Footer = () => {
             <img src="/logo_dark.png" alt="logo" className="h-7 " />
           </Link>
           <p>Created by Vojtěch Růžička</p>
-          <div className="flex gap-2 mt-1">
+          <div className="mt-1 flex gap-2">
             <a href="https://www.linkedin.com/in/vojtech-ruzicka/">
               <img src="/linkedin_icon.svg" alt="linkedin" className="h-5" />
             </a>

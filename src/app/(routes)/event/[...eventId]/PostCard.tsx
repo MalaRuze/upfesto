@@ -1,18 +1,18 @@
 "use client";
 
-import { Posts, PostTypeEnum } from "@prisma/client";
-import { getFormattedDateTime } from "@/lib/utils";
+import { deletePostAction } from "@/actions/deletePostAction";
+import PostHandlerDialog from "@/app/(routes)/event/[...eventId]/PostHandlerDialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useToast } from "@/components/ui/use-toast";
+import { getFormattedDateTime } from "@/lib/utils";
+import { PostTypeEnum, Posts } from "@prisma/client";
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import React from "react";
-import { deletePostAction } from "@/actions/deletePostAction";
-import { useToast } from "@/components/ui/use-toast";
-import PostHandlerDialog from "@/app/(routes)/event/[...eventId]/PostHandlerDialog";
 
 type PostCardProps = {
   post: Posts;
@@ -52,15 +52,15 @@ const PostCard = ({
   };
 
   return (
-    <div className="w-full bg-gray-100 flex flex-col p-4 rounded-xl gap-2">
+    <div className="flex w-full flex-col gap-2 rounded-xl bg-gray-100 p-4">
       {/* post header */}
-      <div className="w-full flex justify-between">
-        <div className="flex gap-2 text-sm items-center">
+      <div className="flex w-full justify-between">
+        <div className="flex items-center gap-2 text-sm">
           {/* user profile image */}
           <img
             src={hostProfileImageUrl}
             alt="avatar"
-            className="w-8 h-8 rounded-full"
+            className="h-8 w-8 rounded-full"
           />
           {/* user full name with date of post creation */}
           <div className="flex flex-col">
@@ -78,7 +78,7 @@ const PostCard = ({
         {post.type === PostTypeEnum.MANUAL && isHost && (
           <DropdownMenu>
             <DropdownMenuTrigger>
-              <MoreHorizontal className="w-5 h-5 m-2" />
+              <MoreHorizontal className="m-2 h-5 w-5" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               {/* edit post */}
@@ -90,7 +90,7 @@ const PostCard = ({
                   eventId={post.eventId}
                   trigger={
                     <div className="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
-                      <Pencil className="h-4 w-4 mr-2" />
+                      <Pencil className="mr-2 h-4 w-4" />
                       <span>Edit post</span>
                     </div>
                   }
@@ -101,7 +101,7 @@ const PostCard = ({
                 className="text-destructive"
                 onClick={() => handleDeletePost(post.id)}
               >
-                <Trash2 className="h-4 w-4 mr-2" />
+                <Trash2 className="mr-2 h-4 w-4" />
                 <span>Delete post</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -109,7 +109,7 @@ const PostCard = ({
         )}
       </div>
       {/* post message */}
-      <span className="bg-white p-2 w-full whitespace-pre-wrap rounded-xl text-sm">
+      <span className="w-full whitespace-pre-wrap rounded-xl bg-white p-2 text-sm">
         {post.message}
       </span>
     </div>

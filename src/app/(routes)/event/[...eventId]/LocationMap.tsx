@@ -1,6 +1,6 @@
 "use client";
 
-import { Marker, APIProvider, Map } from "@vis.gl/react-google-maps";
+import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
 
 type LocationMapProps = {
   lat: number;

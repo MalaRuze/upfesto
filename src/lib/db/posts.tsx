@@ -1,6 +1,6 @@
-import prisma from "../../../prisma/client";
-import { z } from "zod";
 import { PostDataSchema, UpdatePostDataSchema } from "@/lib/schema";
+import prisma from "@/prisma/client";
+import { z } from "zod";
 
 export const createPost = async (data: z.infer<typeof PostDataSchema>) => {
   try {

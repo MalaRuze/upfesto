@@ -1,11 +1,11 @@
 "use server";
 
-import { PostDataSchema } from "@/lib/schema";
 import { createPost } from "@/lib/db/posts";
 import { findEventSubscriptions } from "@/lib/db/subscriptions";
+import { PostDataSchema } from "@/lib/schema";
+import { getErrorMessage } from "@/lib/utils";
 import { PostTypeEnum } from "@prisma/client";
 import { revalidatePath } from "next/cache";
-import { getErrorMessage } from "@/lib/utils";
 import { Resend } from "resend";
 import { z } from "zod";
 

@@ -1,10 +1,7 @@
 "use client";
 
-import { Attendance, ResponseEnum } from "@prisma/client";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { AttendanceFormDataSchema } from "@/lib/schema";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { createAttendanceAction } from "@/actions/createAttendanceAction";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -14,7 +11,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -23,12 +19,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
+import { AttendanceFormDataSchema } from "@/lib/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Attendance, ResponseEnum } from "@prisma/client";
+import { Check, Meh, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useToast } from "@/components/ui/use-toast";
-import { Check, Meh, X } from "lucide-react";
-import { createAttendanceAction } from "@/actions/createAttendanceAction";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 type ResponseDialogProps = {
   currentUserAttendance?: Attendance;

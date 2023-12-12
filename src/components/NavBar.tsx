@@ -1,15 +1,12 @@
 "use client";
 
-import Link from "next/link";
-import React from "react";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { SignedIn, SignedOut, useClerk, useUser } from "@clerk/nextjs";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,8 +15,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { SignedIn, SignedOut, useClerk, useUser } from "@clerk/nextjs";
+import { LogOut, Menu, User, X } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Menu, X, User, LogOut } from "lucide-react";
+import React from "react";
 
 const NavBar = () => {
   /* mobile menu state */
@@ -42,9 +42,9 @@ const NavBar = () => {
     <Collapsible
       open={isOpen}
       onOpenChange={setIsOpen}
-      className="bg-white w-full border-b"
+      className="w-full border-b bg-white"
     >
-      <div className="items-center px-4 max-w-screen-xl mx-auto flex justify-between h-16">
+      <div className="mx-auto flex h-16 max-w-screen-xl items-center justify-between px-4">
         {/*left section*/}
         <CollapsibleTrigger asChild>
           {/*mobile menu trigger*/}
@@ -53,18 +53,18 @@ const NavBar = () => {
             <span className="sr-only">Toggle</span>
           </Button>
         </CollapsibleTrigger>
-        <div className="flex items-center mr-auto pl-4 sm:pl-0 gap-10 ">
+        <div className="mr-auto flex items-center gap-10 pl-4 sm:pl-0 ">
           {/*logo*/}
           <Link href="/">
             <img
               src="/logo_white.png"
               alt="logo"
-              className="h-7 hidden sm:block"
+              className="hidden h-7 sm:block"
             />
             <img src="/logo_icon.png" alt="logo" className="h-7 sm:hidden" />
           </Link>
           {/*desktop menu items*/}
-          <div className="hidden sm:flex gap-5">
+          <div className="hidden gap-5 sm:flex">
             {menus.map((item, idx) => (
               <Link href={item.path} key={idx}>
                 <p className="text-sm font-medium transition-colors hover:text-primary">
@@ -136,7 +136,7 @@ const NavBar = () => {
       <CollapsibleContent className="pl-6 sm:hidden">
         {menus.map((item, idx) => (
           <Link href={item.path} key={idx}>
-            <p className="text-sm font-medium transition-colors hover:text-primary py-3">
+            <p className="py-3 text-sm font-medium transition-colors hover:text-primary">
               {item.title}
             </p>
           </Link>

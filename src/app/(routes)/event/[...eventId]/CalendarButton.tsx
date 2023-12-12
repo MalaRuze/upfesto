@@ -1,14 +1,15 @@
 "use client";
-import { Event } from "@prisma/client";
-import { google, ics, outlook, yahoo } from "calendar-link";
+
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Event } from "@prisma/client";
+import { google, ics, outlook, yahoo } from "calendar-link";
 import { CalendarPlus, Download } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
 
 type CalendarButtonProps = {
@@ -46,7 +47,7 @@ const CalendarButton = ({ event }: CalendarButtonProps) => {
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Google_Calendar_icon_%282020%29.svg"
               alt="google calendar logo"
-              className="w-4 h-4"
+              className="h-4 w-4"
             />
             Google Calendar
           </a>
@@ -61,7 +62,7 @@ const CalendarButton = ({ event }: CalendarButtonProps) => {
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/d/df/Microsoft_Office_Outlook_%282018%E2%80%93present%29.svg"
               alt="outlook logo"
-              className="w-4 h-4"
+              className="h-4 w-4"
             />
             Outlook
           </a>
@@ -76,7 +77,7 @@ const CalendarButton = ({ event }: CalendarButtonProps) => {
             <img
               src="https://www.logo-designer.co/storage/2019/09/2019-pentagram-yahoo-logo-design-3.png"
               alt="yahoo logo"
-              className="w-4 h-4"
+              className="h-4 w-4"
             />
             Yahoo
           </a>
@@ -89,7 +90,7 @@ const CalendarButton = ({ event }: CalendarButtonProps) => {
             download
             className="flex items-center gap-2"
           >
-            <Download className="w-4 h-4" />
+            <Download className="h-4 w-4" />
             Download .ics file
           </a>
         </DropdownMenuItem>

@@ -1,8 +1,8 @@
 "use server";
 
 import { deleteImage } from "@/lib/db/events";
-import { revalidatePath } from "next/cache";
 import { getErrorMessage } from "@/lib/utils";
+import { revalidatePath } from "next/cache";
 
 export const deleteImageAction = async (eventId: string) => {
   try {

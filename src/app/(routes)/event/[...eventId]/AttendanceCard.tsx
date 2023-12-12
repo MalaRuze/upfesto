@@ -1,5 +1,3 @@
-import { getEventAttendance } from "@/lib/db/attendance";
-import { ResponseEnum } from "@prisma/client";
 import {
   Dialog,
   DialogContent,
@@ -8,6 +6,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { getEventAttendance } from "@/lib/db/attendance";
+import { ResponseEnum } from "@prisma/client";
 import { Check, Meh, X } from "lucide-react";
 
 type AttendanceCardProps = {
@@ -30,8 +30,8 @@ const AttendanceCard = async ({ eventId, hostId }: AttendanceCardProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="w-full bg-gray-100 hover:bg-gray-200 rounded-xl h-content p-4 cursor-pointer">
-          <div className="flex justify-between items-center pb-3">
+        <div className="h-content w-full cursor-pointer rounded-xl bg-gray-100 p-4 hover:bg-gray-200">
+          <div className="flex items-center justify-between pb-3">
             <h2 className="font-semibold ">Attendance</h2>
             <p className="text-sm text-secondary-foreground hover:underline">
               see all
@@ -72,18 +72,18 @@ const AttendanceCard = async ({ eventId, hostId }: AttendanceCardProps) => {
           </TabsList>
           <TabsContent
             value="going"
-            className="max-h-96 overflow-y-auto pt-2 space-y-3 text-sm"
+            className="max-h-96 space-y-3 overflow-y-auto pt-2 text-sm"
           >
             {yesCount?.map((user) => (
               <div className="flex items-center gap-3 px-2" key={user.userId}>
                 <img
                   src={user.user.profileImageUrl}
                   alt={user.user.fullName}
-                  className="w-7 h-7 rounded-full"
+                  className="h-7 w-7 rounded-full"
                 />
                 <p>{user.user?.fullName}</p>
                 {user.userId === hostId ? (
-                  <p className="text-gray-400 ml-auto">host</p>
+                  <p className="ml-auto text-gray-400">host</p>
                 ) : (
                   <Check className="ml-auto text-green-500" />
                 )}
@@ -92,7 +92,7 @@ const AttendanceCard = async ({ eventId, hostId }: AttendanceCardProps) => {
           </TabsContent>
           <TabsContent
             value="maybe"
-            className="max-h-96 overflow-y-auto pt-2 space-y-3 text-sm"
+            className="max-h-96 space-y-3 overflow-y-auto pt-2 text-sm"
           >
             {maybeCount?.length !== 0 ? (
               maybeCount.map((user) => (
@@ -100,23 +100,23 @@ const AttendanceCard = async ({ eventId, hostId }: AttendanceCardProps) => {
                   <img
                     src={user.user.profileImageUrl}
                     alt={user.user.fullName}
-                    className="w-8 h-8 rounded-full"
+                    className="h-8 w-8 rounded-full"
                   />
                   <p>{user.user?.fullName}</p>
                   {user.userId === hostId ? (
-                    <p className="text-gray-400 ml-auto">host</p>
+                    <p className="ml-auto text-gray-400">host</p>
                   ) : (
                     <Meh className="ml-auto" />
                   )}
                 </div>
               ))
             ) : (
-              <p className="text-gray-400 text-center py-8">No responses</p>
+              <p className="py-8 text-center text-gray-400">No responses</p>
             )}
           </TabsContent>
           <TabsContent
             value="cant-go"
-            className="max-h-96 overflow-y-auto pt-2 space-y-3 text-sm"
+            className="max-h-96 space-y-3 overflow-y-auto pt-2 text-sm"
           >
             {noCount?.length !== 0 ? (
               noCount.map((user) => (
@@ -124,18 +124,18 @@ const AttendanceCard = async ({ eventId, hostId }: AttendanceCardProps) => {
                   <img
                     src={user.user.profileImageUrl}
                     alt={user.user.fullName}
-                    className="w-8 h-8 rounded-full"
+                    className="h-8 w-8 rounded-full"
                   />
                   <p>{user.user?.fullName}</p>
                   {user.userId === hostId ? (
-                    <p className="text-gray-400 ml-auto">host</p>
+                    <p className="ml-auto text-gray-400">host</p>
                   ) : (
                     <X className="ml-auto text-red-500" />
                   )}
                 </div>
               ))
             ) : (
-              <p className="text-gray-400 text-center py-8">No responses</p>
+              <p className="py-8 text-center text-gray-400">No responses</p>
             )}
           </TabsContent>
         </Tabs>

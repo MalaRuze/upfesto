@@ -1,9 +1,6 @@
 "use client";
-import { Switch } from "@/components/ui/switch";
+
 import { handleSubscriptionAction } from "@/actions/handleSubscriptionAction";
-import { useToast } from "@/components/ui/use-toast";
-import { Label } from "@/components/ui/label";
-import { Info } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -11,6 +8,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { useToast } from "@/components/ui/use-toast";
+import { Info } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -30,7 +31,7 @@ const SubscriptionSwitch = ({
 
   if (!userId) {
     return (
-      <div className="flex items-center text-center w-full gap-2 border justify-around p-2 rounded-xl text-sm text-gray-500">
+      <div className="flex w-full items-center justify-around gap-2 rounded-xl border p-2 text-center text-sm text-gray-500">
         <h2>
           Please{" "}
           <Link
@@ -73,12 +74,12 @@ const SubscriptionSwitch = ({
   };
 
   return (
-    <div className="flex items-center w-full gap-2 border justify-around p-2 rounded-xl">
+    <div className="flex w-full items-center justify-around gap-2 rounded-xl border p-2">
       <div className="flex gap-2">
         <Label className="font-semibold">Email notifications</Label>
         <Dialog>
           <DialogTrigger>
-            <Info className="w-3 h-3" />
+            <Info className="h-3 w-3" />
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>

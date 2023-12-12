@@ -1,11 +1,11 @@
 "use server";
 
-import { NewEventFormDataSchema } from "@/lib/schema";
-import { createEvent } from "@/lib/db/events";
 import { createAttendance } from "@/lib/db/attendance";
+import { createEvent } from "@/lib/db/events";
+import { NewEventFormDataSchema } from "@/lib/schema";
+import { getCombinedDateTime, getErrorMessage } from "@/lib/utils";
 import { ResponseEnum } from "@prisma/client";
 import { revalidatePath } from "next/cache";
-import { getCombinedDateTime, getErrorMessage } from "@/lib/utils";
 import { z } from "zod";
 
 type NewEventInputs = z.infer<typeof NewEventFormDataSchema>;

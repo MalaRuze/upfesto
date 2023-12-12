@@ -1,15 +1,15 @@
 "use server";
 
-import { UpdateEventFormDataSchema } from "@/lib/schema";
+import { createPostAction } from "@/actions/createPostAction";
 import { getEventById, updateEvent } from "@/lib/db/events";
-import { PostTypeEnum } from "@prisma/client";
+import { UpdateEventFormDataSchema } from "@/lib/schema";
 import {
   getCombinedDateTime,
   getErrorMessage,
   getFormattedDateTime,
 } from "@/lib/utils";
+import { PostTypeEnum } from "@prisma/client";
 import { revalidatePath } from "next/cache";
-import { createPostAction } from "@/actions/createPostAction";
 import { z } from "zod";
 
 type UpdateEventInputs = z.infer<typeof UpdateEventFormDataSchema>;

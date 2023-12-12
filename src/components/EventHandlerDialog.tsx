@@ -1,20 +1,30 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import {
-  NewEventFormDataSchema,
-  UpdateEventFormDataSchema,
-} from "@/lib/schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Event } from "@prisma/client";
-import { cn, getTimeFromDate } from "@/lib/utils";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { updateEventAction } from "@/actions/updateEventAction";
 import { createEventAction } from "@/actions/createEventAction";
-import { CalendarIcon } from "lucide-react";
+import deleteEventAction from "@/actions/deleteEventAction";
+import { updateEventAction } from "@/actions/updateEventAction";
+import PlacesSearchBox from "@/components/PlacesSearchBox";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -29,9 +39,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { format, isSameDay } from "date-fns";
-import { Calendar } from "@/components/ui/calendar";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Select,
   SelectContent,
@@ -39,31 +47,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
-import PlacesSearchBox from "@/components/PlacesSearchBox";
-import deleteEventAction from "@/actions/deleteEventAction";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+  NewEventFormDataSchema,
+  UpdateEventFormDataSchema,
+} from "@/lib/schema";
+import { cn, getTimeFromDate } from "@/lib/utils";
+import { useUser } from "@clerk/nextjs";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Event } from "@prisma/client";
+import { format, isSameDay } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 type CreateProps = {
   mode: "create";
@@ -233,7 +232,7 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
     >
       {/*Dialog Trigger*/}
       <DialogTrigger asChild>{props.trigger}</DialogTrigger>
-      <DialogContent className="max-h-screen overflow-y-auto px-2 min-[450px]:p-6 rounded-xl">
+      <DialogContent className="max-h-screen overflow-y-auto rounded-xl px-2 min-[450px]:p-6">
         {/*Dialog Header*/}
         <DialogHeader>
           <DialogTitle>
@@ -249,7 +248,7 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 w-full"
+            className="w-full space-y-4"
           >
             {/*Title*/}
             <FormField
@@ -533,7 +532,7 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
                   <FormControl>
                     <Textarea
                       placeholder="What is the description of the event?"
-                      className="resize-none h-40"
+                      className="h-40 resize-none"
                       maxLength={300}
                       {...field}
                     />

@@ -1,16 +1,16 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { FormItem, FormLabel } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
+import { MapPin } from "lucide-react";
+import { useRef, useState } from "react";
 import { Libraries, useGoogleMapsScript } from "use-google-maps-script";
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
 } from "use-places-autocomplete";
-import { useRef, useState } from "react";
-import { FormItem, FormLabel } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
-import { MapPin } from "lucide-react";
 
 type PlacesSearchBoxProps = {
   onSelectAddress: (
@@ -100,7 +100,7 @@ const ReadySearchBox = ({
 
   return (
     <FormItem
-      className="relative h-content"
+      className="h-content relative"
       onFocus={() => setShowSuggestions(true)}
       onBlur={handleBlur}
     >
@@ -117,7 +117,7 @@ const ReadySearchBox = ({
       {/* Suggestions Dropdown */}
       {showSuggestions && status === "OK" && (
         <div
-          className="bg-white w-full border rounded-lg absolute drop-shadow p-1"
+          className="absolute w-full rounded-lg border bg-white p-1 drop-shadow"
           ref={dropdownRef}
         >
           {data.map(({ place_id, description }) => (

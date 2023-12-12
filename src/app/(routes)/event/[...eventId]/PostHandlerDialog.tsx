@@ -1,5 +1,8 @@
 "use client";
 
+import { createPostAction } from "@/actions/createPostAction";
+import { updatePostAction } from "@/actions/updatePostAction";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,7 +12,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -17,16 +19,14 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { PostDataSchema, UpdatePostDataSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import z from "zod";
 import { PostTypeEnum } from "@prisma/client";
 import React, { useState } from "react";
-import { Textarea } from "@/components/ui/textarea";
-import { createPostAction } from "@/actions/createPostAction";
-import { updatePostAction } from "@/actions/updatePostAction";
+import { useForm } from "react-hook-form";
+import z from "zod";
 
 type CreateProps = {
   mode: "create";
@@ -139,7 +139,7 @@ const PostHandlerDialog = (props: UpdateProps | CreateProps) => {
                   <FormControl>
                     <Textarea
                       placeholder="What's on your mind?"
-                      className="resize-none h-40"
+                      className="h-40 resize-none"
                       maxLength={300}
                       {...field}
                     />

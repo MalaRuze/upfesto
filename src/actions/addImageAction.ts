@@ -1,8 +1,8 @@
 "use server";
 
 import { addImage } from "@/lib/db/events";
-import { revalidatePath } from "next/cache";
 import { getErrorMessage } from "@/lib/utils";
+import { revalidatePath } from "next/cache";
 
 export const addImageAction = async (eventId: string, imageUrl: string) => {
   try {

@@ -1,18 +1,18 @@
 "use client";
 
-import { UploadButton } from "@/lib/uploadthing";
+import { addImageAction } from "@/actions/addImageAction";
+import { deleteImageAction } from "@/actions/deleteImageAction";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import React from "react";
 import Spinner from "@/components/ui/spinner";
 import { useToast } from "@/components/ui/use-toast";
+import { UploadButton } from "@/lib/uploadthing";
 import { ArrowUpFromLine, ImagePlus, Trash2 } from "lucide-react";
-import { addImageAction } from "@/actions/addImageAction";
-import { deleteImageAction } from "@/actions/deleteImageAction";
+import React from "react";
 
 type UploadImageButtonProps = {
   eventId: string;
@@ -25,7 +25,7 @@ const UploadImageButton = ({ eventId, imageUrl }: UploadImageButtonProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="bg-white/80 hover:bg-white/95 p-2 rounded-xl  ">
+        <button className="rounded-xl bg-white/80 p-2 hover:bg-white/95  ">
           <ImagePlus />
         </button>
       </DropdownMenuTrigger>
@@ -101,7 +101,7 @@ const UploadImageButton = ({ eventId, imageUrl }: UploadImageButtonProps) => {
 
         {imageUrl && (
           <DropdownMenuItem
-            className="text-destructive flex items-center gap-2"
+            className="flex items-center gap-2 text-destructive"
             onClick={async () => await deleteImageAction(eventId)}
           >
             <Trash2 className="h-4 w-4" />

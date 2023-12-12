@@ -1,8 +1,7 @@
-import React from "react";
-import { currentUser } from "@clerk/nextjs";
-import { Calendar, MapPin, Pencil, User2 } from "lucide-react";
-import { getEventById } from "@/lib/db/events";
+import EventHandlerDialog from "@/components/EventHandlerDialog";
+import { Button } from "@/components/ui/button";
 import { getEventAttendance } from "@/lib/db/attendance";
+import { getEventById } from "@/lib/db/events";
 import { getEventPosts } from "@/lib/db/posts";
 import { findSubscriptionById } from "@/lib/db/subscriptions";
 import { getPublicUserInfoById } from "@/lib/db/users";
@@ -10,17 +9,19 @@ import {
   getDetailedFormattedDateTime,
   splitStringAtFirstComma,
 } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import EventHandlerDialog from "@/components/EventHandlerDialog";
-import NotFound from "./NotFound";
-import SubscriptionSwitch from "./SubscriptionSwitch";
-import PostCard from "./PostCard";
-import PostHandlerDialog from "./PostHandlerDialog";
-import ShareDialog from "./ShareDialog";
+import { currentUser } from "@clerk/nextjs";
+import { Calendar, MapPin, Pencil, User2 } from "lucide-react";
+import React from "react";
+
+import AttendanceCard from "./AttendanceCard";
 import CalendarButton from "./CalendarButton";
 import LocationMap from "./LocationMap";
-import AttendanceCard from "./AttendanceCard";
+import NotFound from "./NotFound";
+import PostCard from "./PostCard";
+import PostHandlerDialog from "./PostHandlerDialog";
 import ResponseDialog from "./ResponseDialog";
+import ShareDialog from "./ShareDialog";
+import SubscriptionSwitch from "./SubscriptionSwitch";
 import UploadImageButton from "./UploadImageButton";
 
 interface EventPageProps {
@@ -84,14 +85,14 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
       : undefined;
 
   return (
-    <main className="flex min-h-screen flex-col sm:p-8 max-w-screen-xl mx-auto">
+    <main className="mx-auto flex min-h-screen max-w-screen-xl flex-col sm:p-8">
       {/* event image */}
-      <div className="bg-gradient-to-bl from-indigo-400 to-sky-100  h-64 w-full  sm:rounded-xl relative">
+      <div className="relative h-64 w-full  bg-gradient-to-bl from-indigo-400  to-sky-100 sm:rounded-xl">
         {event.imageUrl !== null && (
           <img
             src={event.imageUrl}
             alt={event.title}
-            className="object-cover h-full w-full sm:rounded-xl"
+            className="h-full w-full object-cover sm:rounded-xl"
           />
         )}
         {isHost && (
@@ -100,23 +101,23 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
           </div>
         )}
         {/* date */}
-        <div className="absolute w-20 h-20 bg-white/80 bottom-4 left-4 rounded-xl p-2 flex flex-col justify-between">
+        <div className="absolute bottom-4 left-4 flex h-20 w-20 flex-col justify-between rounded-xl bg-white/80 p-2">
           {/* month */}
           <p className="text-center">
             {event.dateFrom.toLocaleString("en-GB", { month: "short" })}
           </p>
           {/* day*/}
-          <p className="text-4xl font-semibold text-center">
+          <p className="text-center text-4xl font-semibold">
             {event.dateFrom.getDate()}
           </p>
         </div>
       </div>
       {/* event title */}
-      <h1 className="text-4xl p-4 w-full break-words">{event?.title}</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-5 gap-y-4 sm:gap-x-8 px-4 sm:px-0">
+      <h1 className="w-full break-words p-4 text-4xl">{event?.title}</h1>
+      <div className="grid grid-cols-1 gap-y-4 px-4 sm:grid-cols-5 sm:gap-x-8 sm:px-0">
         {/* event detail section */}
         <div className="sm:col-span-3">
-          <div className="bg-gray-100 p-4 rounded-xl text-sm space-y-4 relative">
+          <div className="relative space-y-4 rounded-xl bg-gray-100 p-4 text-sm">
             <h2 className="text-base font-semibold">Event Details</h2>
             {/* edit event button */}
             {isHost && (
@@ -125,7 +126,7 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
                 trigger={
                   <Button
                     variant="outline"
-                    className="flex gap-2 absolute right-3 -top-1"
+                    className="absolute -top-1 right-3 flex gap-2"
                     size="sm"
                   >
                     <Pencil className="h-4 w-4" /> Edit
@@ -137,7 +138,7 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
             {/* event details */}
             <ul className="space-y-4">
               {hostDetails.user !== null && (
-                <li className="flex gap-3 items-center">
+                <li className="flex items-center gap-3">
                   <User2 size={20} className="flex-shrink-0" />
                   <div>
                     hosted by{" "}
@@ -147,7 +148,7 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
                   </div>
                 </li>
               )}
-              <li className="flex gap-3 items-center">
+              <li className="flex items-center gap-3">
                 <Calendar size={20} className="flex-shrink-0" />
                 <div>
                   <span className="font-semibold">
@@ -157,7 +158,7 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
                 </div>
               </li>
               {formattedEventLocationAddress && (
-                <li className="flex gap-3 items-center">
+                <li className="flex items-center gap-3">
                   <MapPin size={20} className="flex-shrink-0" />
                   <div className="flex flex-wrap gap-1">
                     <span className="font-semibold">
@@ -172,14 +173,14 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
           </div>
         </div>
         {/* attendance section */}
-        <div className="sm:col-span-2 sm:row-span-3 space-y-4">
+        <div className="space-y-4 sm:col-span-2 sm:row-span-3">
           <AttendanceCard eventId={event.id} hostId={event.hostId} />
           <ResponseDialog
             eventId={event.id}
             userId={user?.id}
             currentUserAttendance={currentUserAttendance}
           />
-          <div className="w-full grid grid-cols-2 gap-4">
+          <div className="grid w-full grid-cols-2 gap-4">
             <ShareDialog />
             <CalendarButton event={event} />
           </div>
@@ -196,14 +197,14 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
           )}
         </div>
         {/* Posts section */}
-        <div className=" sm:col-span-3 space-y-4">
+        <div className=" space-y-4 sm:col-span-3">
           {/* create post button */}
           {user && isHost && (
-            <div className="w-full bg-gray-100 flex p-4 items-center rounded-xl gap-4">
+            <div className="flex w-full items-center gap-4 rounded-xl bg-gray-100 p-4">
               <img
                 src={user.imageUrl}
                 alt="avatar"
-                className="w-8 h-8 rounded-full"
+                className="h-8 w-8 rounded-full"
               />
               <PostHandlerDialog
                 eventId={event.id}
@@ -234,7 +235,7 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
                 />
               ))
           ) : (
-            <div className="py-12 text-center text-gray-400 hidden sm:block">
+            <div className="hidden py-12 text-center text-gray-400 sm:block">
               No posts yet
             </div>
           )}

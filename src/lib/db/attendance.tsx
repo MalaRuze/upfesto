@@ -1,6 +1,6 @@
-import prisma from "../../../prisma/client";
-import { z } from "zod";
 import { AttendanceDataSchema, AttendanceFormDataSchema } from "@/lib/schema";
+import prisma from "@/prisma/client";
+import { z } from "zod";
 
 export const getEventAttendance = async (eventId: string) => {
   try {
