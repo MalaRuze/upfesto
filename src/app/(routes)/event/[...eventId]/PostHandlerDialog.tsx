@@ -109,6 +109,7 @@ const PostHandlerDialog = (props: UpdateProps | CreateProps) => {
       title: "Post saved",
       description: "Your post has been saved.",
     });
+    form.reset();
     setIsDialogOpen(false);
   };
 
