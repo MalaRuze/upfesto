@@ -11,7 +11,7 @@ generator client {
 model Event {
   id              String          @id @default(uuid())
   title           String
-  description     String?
+  description     String?         @db.Text
   locationAddress String?
   locationLat     String?
   locationLon     String?

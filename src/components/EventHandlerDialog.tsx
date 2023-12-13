@@ -533,7 +533,7 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
                     <Textarea
                       placeholder="What is the description of the event?"
                       className="h-40 resize-none"
-                      maxLength={300}
+                      maxLength={500}
                       {...field}
                     />
                   </FormControl>

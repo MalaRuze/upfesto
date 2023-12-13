@@ -7,7 +7,7 @@ const timeFormat = /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/;
 
 export const NewEventFormDataSchema = z.object({
   title: z.string().min(1).max(50),
-  description: z.string().max(300).nullish(),
+  description: z.string().max(500).nullish(),
   locationAddress: z.string().nullish(),
   locationLat: z.number().nullish(),
   locationLon: z.number().nullish(),
@@ -28,7 +28,7 @@ export const NewEventFormDataSchema = z.object({
 
 export const NewEventDataSchema = z.object({
   title: z.string().min(1).max(50),
-  description: z.string().max(300).nullish(),
+  description: z.string().max(500).nullish(),
   locationAddress: z.string().nullish(),
   locationLat: z.string().nullish(),
   locationLon: z.string().nullish(),
@@ -41,7 +41,7 @@ export const NewEventDataSchema = z.object({
 export const UpdateEventFormDataSchema = z.object({
   id: z.string(),
   title: z.string().min(1).max(50),
-  description: z.string().max(300).nullish(),
+  description: z.string().max(500).nullish(),
   locationAddress: z.string().nullish(),
   locationLat: z.number().nullish(),
   locationLon: z.number().nullish(),
@@ -63,7 +63,7 @@ export const UpdateEventFormDataSchema = z.object({
 export const UpdateEventDataSchema = z.object({
   id: z.string(),
   title: z.string().min(1).max(50),
-  description: z.string().max(300).nullish(),
+  description: z.string().max(500).nullish(),
   locationAddress: z.string().nullish(),
   locationLat: z.string().nullish(),
   locationLon: z.string().nullish(),
