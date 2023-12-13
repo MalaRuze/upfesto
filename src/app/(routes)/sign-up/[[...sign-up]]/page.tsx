@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 const SignUpPage = () => {
   return (
-    <main className="min-h-[80vh]">
+    <main className="min-h-screen">
       <SignUp />
     </main>
   );

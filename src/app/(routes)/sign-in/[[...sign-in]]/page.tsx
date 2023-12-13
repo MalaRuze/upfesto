@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 const SignInPage = () => {
   return (
-    <main className="min-h-[80vh]">
+    <main className="min-h-screen">
       <SignIn />
     </main>
   );
