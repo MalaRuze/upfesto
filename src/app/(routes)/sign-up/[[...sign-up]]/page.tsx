@@ -6,7 +6,11 @@ export const metadata: Metadata = {
 };
 
 const SignUpPage = () => {
-  return <SignUp />;
+  return (
+    <main className="min-h-[80vh]">
+      <SignUp />
+    </main>
+  );
 };
 
 export default SignUpPage;

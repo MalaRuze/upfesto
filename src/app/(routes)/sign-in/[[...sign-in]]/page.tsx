@@ -6,7 +6,11 @@ export const metadata: Metadata = {
 };
 
 const SignInPage = () => {
-  return <SignIn />;
+  return (
+    <main className="min-h-[80vh]">
+      <SignIn />
+    </main>
+  );
 };
 
 export default SignInPage;
