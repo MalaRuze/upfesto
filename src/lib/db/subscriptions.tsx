@@ -46,13 +46,20 @@ export const findEventSubscriptions = async (eventId: string) => {
         },
         event: {
           select: {
+            id: true,
             title: true,
             dateFrom: true,
             dateTo: true,
             locationAddress: true,
             imageUrl: true,
+            host: {
+              select: {
+                fullName: true,
+                profileImageUrl: true,
+              },
+            },
           },
-        }, // Include related User data
+        },
       },
     });
 

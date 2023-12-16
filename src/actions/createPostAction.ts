@@ -1,5 +1,7 @@
 "use server";
 
+import ImportantChangeEmail from "@/emails/ImportantChangeEmail";
+import NewPostEmail from "@/emails/NewPostEmail";
 import { createPost } from "@/lib/db/posts";
 import { findEventSubscriptions } from "@/lib/db/subscriptions";
 import { PostDataSchema } from "@/lib/schema";
@@ -10,6 +12,16 @@ import { Resend } from "resend";
 import { z } from "zod";
 
 type NewPostInputs = z.infer<typeof PostDataSchema>;
+
+export type EventForEmail = {
+  id: string;
+  title: string;
+  locationAddress: string | null;
+  imageUrl: string | null;
+  dateFrom: Date;
+  dateTo: Date | null;
+  host: { fullName: string; profileImageUrl: string };
+};
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -38,15 +50,16 @@ export const createPostAction = async (data: NewPostInputs) => {
 
 const sendEmails = async (
   subscribedEmails: string[],
-  event: any,
+  event: EventForEmail,
   data: NewPostInputs,
 ) => {
   if (subscribedEmails.length > 0 && data.type === PostTypeEnum.MANUAL) {
     await resend.emails.send({
       from: "Upfesto <info@upfesto.com>",
       to: subscribedEmails,
-      subject: "New post in event " + event.title,
+      subject: "New post in " + event.title,
       text: data.message,
+      react: NewPostEmail({ event, message: data.message }),
     });
   }
   if (subscribedEmails.length > 0 && data.type === PostTypeEnum.AUTO) {
@@ -55,6 +68,7 @@ const sendEmails = async (
       to: subscribedEmails,
       subject: "Important changes in " + event.title,
       text: data.message,
+      react: ImportantChangeEmail({ event, message: data.message }),
     });
   }
 };
