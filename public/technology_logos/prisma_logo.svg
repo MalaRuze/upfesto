@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   fill="none"
+   height="980.5777"
+   viewBox="1.372 -0.18543865 105.42026 127.99978"
+   width="812.04193"
+   version="1.1"
+   id="svg4"
+   sodipodi:docname="prisma_logo.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="namedview4"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.58491873"
+     inkscape:cx="1078.7823"
+     inkscape:cy="465.87669"
+     inkscape:window-width="2560"
+     inkscape:window-height="1369"
+     inkscape:window-x="1672"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g4" />
+  <g
+     fill="#0c344b"
+     id="g4"
+     transform="translate(0.19588068,-0.18566148)">
+    <path
+       id="path4"
+       d="M 55.549077,0.01291347 C 52.87008,-0.14308638 50.469889,1.1489337 49.115891,3.3479315 L 1.3719241,80.677978 a 7.233,7.233 0 0 0 0.084134,7.763012 l 23.3379879,36.1521 C 26.185044,126.75108 28.595014,128 31.100012,128 c 0.709999,0 1.424039,-0.1 2.126038,-0.30798 l 67.74388,-20.03611 a 7.424,7.424 0 0 0 4.66,-4.02798 7.264,7.264 0 0 0 -0.04,-6.109908 v 0.001 L 61.567968,4.0370649 v -0.00204 A 7.062,7.062 0 0 0 55.549077,0.01291347 Z M 57.425264,15.877514 c 0.783749,-0.08987 1.619744,0.262893 2.020744,1.114392 l 38.019869,80.736195 c 0.716999,1.522999 -0.100906,3.318819 -1.732904,3.800819 l -57.479028,17.00015 c -1.755998,0.52 -3.438868,-0.99905 -3.069868,-2.77005 L 55.71811,17.418949 c 0.192,-0.918999 0.923405,-1.451561 1.707154,-1.541435 z" />
+  </g>
+</svg>

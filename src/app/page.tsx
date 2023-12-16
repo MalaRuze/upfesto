@@ -48,7 +48,7 @@ const eventTypes = [
 const features = [
   {
     name: "Everything in one place",
-    image: "feature_information.png",
+    image: "pictures/feature_information.png",
     subfeatures: [
       {
         name: "Event details",
@@ -72,7 +72,7 @@ const features = [
   },
   {
     name: "Keep your guests updated",
-    image: "feature_posts.png",
+    image: "pictures/feature_posts.png",
     subfeatures: [
       {
         name: "Posts",
@@ -90,7 +90,7 @@ const features = [
   },
   {
     name: "Guests list on a glance",
-    image: "feature_attendance.png",
+    image: "pictures/feature_attendance.png",
     subfeatures: [
       {
         name: "Easy invitation",
@@ -113,7 +113,7 @@ const features = [
   },
   {
     name: "Never miss a thing",
-    image: "feature_calendar.png",
+    image: "pictures/feature_calendar.png",
     subfeatures: [
       {
         name: "Add to calendar",
@@ -169,7 +169,7 @@ const Home = () => {
               </a>
             </div>
           </div>
-          <img src="showcase.png" className="drop-shadow-xl" />
+          <img src="pictures/showcase.png" className="drop-shadow-xl" />
         </div>
         <div
           className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"

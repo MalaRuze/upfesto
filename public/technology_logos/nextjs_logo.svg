@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 26.5.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+
+<svg
+   version="1.0"
+   id="katman_1"
+   x="0px"
+   y="0px"
+   viewBox="0 0 256 256"
+   xml:space="preserve"
+   sodipodi:docname="nextjs_logo.svg"
+   width="256"
+   height="256"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs5" /><sodipodi:namedview
+   id="namedview5"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   inkscape:zoom="3.7596154"
+   inkscape:cx="127.93862"
+   inkscape:cy="128.07161"
+   inkscape:window-width="2560"
+   inkscape:window-height="1369"
+   inkscape:window-x="1672"
+   inkscape:window-y="-8"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="katman_1" />
+<style
+   type="text/css"
+   id="style1">
+	.st0{filter:url(#Adobe_OpacityMaskFilter);}
+	.st1{fill:#FFFFFF;}
+	.st2{mask:url(#mask-2_00000011712862621112014060000004681409511743882135_);}
+	.st3{fill:url(#SVGID_1_);}
+	.st4{fill:url(#SVGID_00000030487188734980939430000014510370791660140472_);}
+</style>
+<g
+   id="g5"
+   transform="translate(-92,-28)">
+	<defs
+   id="defs1">
+		<filter
+   id="Adobe_OpacityMaskFilter"
+   filterUnits="userSpaceOnUse"
+   x="92"
+   y="28"
+   width="256"
+   height="256">
+			<feColorMatrix
+   type="matrix"
+   values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"
+   id="feColorMatrix1" />
+		</filter>
+	</defs>
+	
+		<mask
+   maskUnits="userSpaceOnUse"
+   x="92"
+   y="28"
+   width="256"
+   height="256"
+   id="mask-2_00000011712862621112014060000004681409511743882135_">
+		<g
+   class="st0"
+   id="g1">
+			<circle
+   id="path-1_00000121974283267827894410000012896267732457332139_"
+   class="st1"
+   cx="220"
+   cy="156"
+   r="128" />
+		</g>
+	</mask>
+	<g
+   class="st2"
+   mask="url(#mask-2_00000011712862621112014060000004681409511743882135_)"
+   id="g4">
+		<circle
+   cx="220"
+   cy="156"
+   r="128"
+   id="circle1" />
+		
+			<linearGradient
+   id="SVGID_1_"
+   gradientUnits="userSpaceOnUse"
+   x1="-371.15039"
+   y1="574.36682"
+   x2="-370.87439"
+   y2="573.96979"
+   gradientTransform="matrix(135.8336,0,0,-157.6462,50639.402,90756.305)">
+			<stop
+   offset="0"
+   style="stop-color:#FFFFFF"
+   id="stop1" />
+			<stop
+   offset="1"
+   style="stop-color:#FFFFFF;stop-opacity:0"
+   id="stop2" />
+		</linearGradient>
+		<path
+   class="st3"
+   d="M 304.63,252.03 190.34,104.8 H 168.8 v 102.36 h 17.23 v -80.48 l 105.08,135.77 c 4.74,-3.18 9.26,-6.66 13.52,-10.42 z"
+   id="path2"
+   style="fill:url(#SVGID_1_)" />
+		
+			<linearGradient
+   id="SVGID_00000141450593947928411570000005336396235809311886_"
+   gradientUnits="userSpaceOnUse"
+   x1="-347.13641"
+   y1="574.02881"
+   x2="-347.1369"
+   y2="573.29437"
+   gradientTransform="matrix(17.0667,0,0,-102.4,6188.5557,58885.32)">
+			<stop
+   offset="0"
+   style="stop-color:#FFFFFF"
+   id="stop3" />
+			<stop
+   offset="1"
+   style="stop-color:#FFFFFF;stop-opacity:0"
+   id="stop4" />
+		</linearGradient>
+		
+			<rect
+   x="255.56"
+   y="104.8"
+   style="fill:url(#SVGID_00000141450593947928411570000005336396235809311886_)"
+   width="17.07"
+   height="102.4"
+   id="rect4" />
+	</g>
+</g>
+</svg>
