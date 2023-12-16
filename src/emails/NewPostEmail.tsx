@@ -30,17 +30,17 @@ const NewPostEmail = ({ event, message }: EmailProps) => {
                   {event.title}
                 </Heading>
               </Section>
-              <Section className="p-6 bg-gray-200 rounded-lg w-full">
-                <Text className="font-semibold text-sm mt-2 mb-0">
+              <Section className="p-6 bg-gray-200 rounded-lg">
+                <Text className="font-semibold text-sm mt-2 mb-0 w-full">
                   {event.host.fullName}
                 </Text>
-                <Text className="text-gray-800 mt-2">{message}</Text>
+                <Text className="text-gray-800 mt-2 w-full">{message}</Text>
               </Section>
               <Section>
                 <Text className="mb-4 font-semibold text-gray-600 text-base">
                   To see event details, attendance or change your response:
                 </Text>
-                <Section className="w-full bg-yellow-400 rounded-xl">
+                <Section className="bg-yellow-400 rounded-xl">
                   <Button
                     href={`https://upfesto.com/event/${event.id}`}
                     className="p-4  w-full font-semibold  mx-auto text-center text-black "

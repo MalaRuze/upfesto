@@ -30,14 +30,14 @@ const ImportantChangeEmail = ({ event, message }: EmailProps) => {
                   {event.title}
                 </Heading>
               </Section>
-              <Section className="p-6 bg-gray-200 rounded-lg w-full">
-                <Text className="text-sm">{message}</Text>
+              <Section className="p-6 bg-gray-200 rounded-lg">
+                <Text className="text-gray-800 w-full">{message}</Text>
               </Section>
               <Section>
                 <Text className="mb-4 font-semibold text-gray-600 text-base">
                   To see event details, attendance or change your response:
                 </Text>
-                <Section className="w-full bg-yellow-400 rounded-xl">
+                <Section className="bg-yellow-400 rounded-xl">
                   <Button
                     href={`https://upfesto.com/event/${event.id}`}
                     className="p-4  w-full font-semibold  mx-auto text-center text-black "
