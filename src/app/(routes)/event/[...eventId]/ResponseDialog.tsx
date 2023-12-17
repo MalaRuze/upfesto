@@ -42,6 +42,9 @@ const ResponseDialog = ({
   eventId,
 }: ResponseDialogProps) => {
   const { toast } = useToast();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const pathname = usePathname();
+
   const form = useForm<z.infer<typeof AttendanceFormDataSchema>>({
     resolver: zodResolver(AttendanceFormDataSchema),
     defaultValues: {
@@ -50,8 +53,6 @@ const ResponseDialog = ({
       eventId: eventId,
     },
   });
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const pathname = usePathname();
 
   const onSubmit = async (values: z.infer<typeof AttendanceFormDataSchema>) => {
     const res = await createAttendanceAction(values);

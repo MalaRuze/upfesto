@@ -8,17 +8,23 @@ export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 };
 
+/* return time in format HH:MM */
 export const getTimeFromDate = (date: Date): string => {
   const hours = date.getHours().toString().padStart(2, "0");
   const minutes = date.getMinutes().toString().padStart(2, "0");
   return `${hours}:${minutes}`;
 };
 
+/* combines date and time in format HH:MM */
 export const getCombinedDateTime = (date: Date, time?: string | null) => {
   const dateString = format(date, "yyyy-MM-dd", { timeZone: timezone });
   return new Date(`${dateString}T${time}`);
 };
 
+/* return date time of event in format (input) : */
+/* Fri, 22 Dec - 23 Dec (dateFrom and dateTo)*/
+/* Thu, 7 Dec at 12:00  (only dateFrom)*/
+/* Thu, 6 Jan at 12:00, 2024 (dateFrom is next year)*/
 export const getFormattedDateTime = (dateFrom: Date, dateTo?: Date) => {
   const dateFromOptions: Intl.DateTimeFormatOptions = {
     weekday: "short",
@@ -62,6 +68,8 @@ export const getFormattedDateTime = (dateFrom: Date, dateTo?: Date) => {
   return formattedDateFrom;
 };
 
+/* returns detailed date and time of event in format: */
+/* 12:00 Friday, 22 Dec - Saturday, 23 Dec */
 export const getDetailedFormattedDateTime = (dateFrom: Date, dateTo?: Date) => {
   const dateFromOptions: Intl.DateTimeFormatOptions = {
     weekday: "long",

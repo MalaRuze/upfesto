@@ -50,6 +50,7 @@ const EventsList = ({ events, type }: EventsListProps) => {
 
   return (
     <>
+      {/* sort & filter */}
       <div className="mb-4 flex w-full flex-col justify-end gap-2 min-[450px]:flex-row sm:-mt-14">
         <Select
           value={sortOrder}
@@ -84,6 +85,7 @@ const EventsList = ({ events, type }: EventsListProps) => {
           </SelectContent>
         </Select>
       </div>
+      {/* events */}
       <div className="grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {type === "created" && (
           <EventHandlerDialog

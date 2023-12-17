@@ -16,7 +16,7 @@ type CalendarButtonProps = {
   event: Event;
 };
 
-const CalendarButton = ({ event }: CalendarButtonProps) => {
+const AddToCalendarButton = ({ event }: CalendarButtonProps) => {
   const pathName = usePathname();
   const eventCaledarData = {
     title: event.title,
@@ -99,4 +99,4 @@ const CalendarButton = ({ event }: CalendarButtonProps) => {
   );
 };
 
-export default CalendarButton;
+export default AddToCalendarButton;

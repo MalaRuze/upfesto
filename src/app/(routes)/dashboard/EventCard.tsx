@@ -23,7 +23,6 @@ const EventCard = ({ event, attendances }: EventCardProps) => {
   const yesAttendance = attendances?.filter(
     (attendance) => attendance.response === "YES",
   ).length;
-
   const currentUserAttendance =
     event.hostId !== user?.id
       ? attendances?.find((attendance) => attendance.userId === user?.id)
@@ -35,7 +34,7 @@ const EventCard = ({ event, attendances }: EventCardProps) => {
         variant="outline"
         className="grid h-60 w-full grid-rows-5 justify-normal truncate p-0"
       >
-        {/* Image */}
+        {/* image */}
         <div className="row-span-3 h-full w-full rounded-t-xl bg-gradient-to-bl from-indigo-400 to-sky-100">
           {event?.imageUrl !== null && (
             <img
@@ -45,7 +44,7 @@ const EventCard = ({ event, attendances }: EventCardProps) => {
             />
           )}
         </div>
-        {/* Event info */}
+        {/* event info */}
         <div className="row-span-2 flex h-full w-full flex-col items-start justify-around p-3">
           <p className="text-gray-500">{formattedDateTime}</p>
           <h2 className="text-lg font-bold ">{event.title}</h2>

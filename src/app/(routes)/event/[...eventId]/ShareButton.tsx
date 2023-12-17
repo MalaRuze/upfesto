@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Copy, Share2 } from "lucide-react";
 import { usePathname } from "next/navigation";
 
-const ShareDialog = () => {
+const ShareButton = () => {
   const pathName = usePathname();
 
   return (
@@ -49,4 +49,4 @@ const ShareDialog = () => {
   );
 };
 
-export default ShareDialog;
+export default ShareButton;

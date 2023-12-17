@@ -145,7 +145,7 @@ const paragraphs = [
         decided to hit pause and turn our attention to different projects.
       </p>
     ),
-    image: "pictures/feature_information.png",
+    image: "pictures/about_validation.jpg",
   },
   {
     title: "Farewell to Upfesto",
@@ -221,6 +221,7 @@ const technologies = [
 const DashboardPage = () => {
   return (
     <main className="flex min-h-screen flex-col items-center">
+      {/* heading */}
       <div className="w-full bg-gray-100 pt-20 px-6">
         <div className="max-w-screen-lg mx-auto grid grid-cols-1 lg:grid-cols-2">
           <div>
@@ -239,7 +240,8 @@ const DashboardPage = () => {
           />
         </div>
       </div>
-      <div className="w-full max-w-screen-lg flex flex-col lg:mt-40 mt-52 px-6 lg:px-0 space-y-32">
+      {/* paragraphs */}
+      <div className="w-full max-w-screen-lg flex flex-col lg:mt-40 mt-60 px-6 lg:px-0 space-y-20 lg:space-y-32">
         {paragraphs.map((feature, key) => (
           <div
             className="grid grid-cols-1 gap-10 lg:gap-32 lg:grid-cols-2"
@@ -261,22 +263,23 @@ const DashboardPage = () => {
           </div>
         ))}
       </div>
-      <div className="w-full bg-gray-100 mt-32 px-6 py-10">
+      {/* why this site exists */}
+      <div className="w-full bg-gray-100 mt-20 px-6 py-10">
         <div className="max-w-screen-lg mx-auto grid grid-cols-1 lg:grid-cols-2 items-center lg:gap-20 gap-10">
           <div>
             <h2 className="text-2xl sm:text-4xl font-bold tracking-tight ">
               Why this site exists?
             </h2>
             <p className="mt-4 text-lg leading-8 text-gray-600 ">
-              Despite Upfesto's shortcomings, I made the decision to salvage the
-              basic concept and transform it into a portfolio project to enhance
-              and showcase my skills. <br />
+              Despite Upfesto&apos;s shortcomings, I made the decision to
+              salvage the basic concept and transform it into a portfolio
+              project to enhance and showcase my skills. <br />
               <br />
               Main technologies used on this site:
             </p>
             <dl className="grid grid-cols-4 gap-8 my-10 items-center">
               {technologies.map((technology, key) => (
-                <TooltipProvider>
+                <TooltipProvider key={key}>
                   <Tooltip>
                     <TooltipTrigger>
                       <dd key={key}>
@@ -308,11 +311,12 @@ const DashboardPage = () => {
             </p>
           </div>
           <img
-            src="pictures/about_grind.jpg"
+            src="pictures/about_dev.jpg"
             className="rounded-xl  max-h-96 mx-auto drop-shadow-xl"
           />
         </div>
       </div>
+      {/* contact me */}
       <div className="w-full px-6  mt-10 mb-4">
         <div className="mx-auto max-w-screen-lg">
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight ">
@@ -329,12 +333,12 @@ const DashboardPage = () => {
             </dd>
             <dd>
               <a href="https://www.linkedin.com/in/vojtech-ruzicka/">
-                <img src="linkedin_logo_dark.png" className="h-8 w-8" />
+                <img src="linkedin_icon_dark.png" className="h-8 w-8" />
               </a>
             </dd>
             <dd>
               <a href="https://github.com/MalaRuze">
-                <img src="github_logo_dark.png" className="h-8 w-8" />
+                <img src="github_icon_dark.png" className="h-8 w-8" />
               </a>
             </dd>
           </dl>

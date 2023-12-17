@@ -75,7 +75,6 @@ type UpdateProps = {
   event: Event;
 };
 
-// function to get the correct schema based on the mode
 const getEventFormSchema = (mode: "create" | "update") => {
   switch (mode) {
     case "create":
@@ -89,15 +88,12 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
   const { user } = useUser();
   const router = useRouter();
   const { toast } = useToast();
-  // state to keep track of whether the end date and time should be included
   const [includeEndDateTime, setIncludeEndDateTime] = useState(
     props.mode === "update" && props.event.dateTo !== null,
   );
-  // state to keep track of whether the dialog is open
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  // get the correct schema based on the mode
   const schema = getEventFormSchema(props.mode);
-  // times to be used in the time select in format HH:MM
+  /* times to be used in the time select in format HH:MM */
   const times: string[] = [];
   for (let i = 0; i < 24; i++) {
     for (let j = 0; j < 60; j += 15) {
@@ -107,7 +103,6 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
     }
   }
 
-  // function to get default values for the form
   const getDefaultValues = () => {
     switch (props.mode) {
       case "update":
@@ -141,20 +136,18 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
     }
   };
 
-  // initialize form
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: getDefaultValues(),
   });
 
-  // reset form when props change
+  /* reset form when props change */
   useEffect(() => {
     form.reset(getDefaultValues());
   }, [props, user]);
 
-  // function to handle form submission
   const onSubmit = async (values: z.infer<typeof schema>) => {
-    // create new event or update existing event
+    /* create new event or update existing event */
     const res =
       props.mode === "create"
         ? await createEventAction(
@@ -186,10 +179,8 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
       description: "Your event has been saved.",
     });
 
-    // reset form and close dialog
     form.reset();
     setIsDialogOpen(false);
-    // redirect to new event page
     router.push(`/event/${res.event?.id}`);
   };
 
@@ -230,10 +221,8 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
       }}
       open={isDialogOpen}
     >
-      {/*Dialog Trigger*/}
       <DialogTrigger asChild>{props.trigger}</DialogTrigger>
       <DialogContent className="max-h-screen overflow-y-auto rounded-xl px-2 min-[450px]:p-6">
-        {/*Dialog Header*/}
         <DialogHeader>
           <DialogTitle>
             {props.mode === "create" ? "Create Event" : "Update Event"}
@@ -244,13 +233,12 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
               : "Update an existing event"}
           </DialogDescription>
         </DialogHeader>
-        {/*Form*/}
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="w-full space-y-4"
           >
-            {/*Title*/}
+            {/*title*/}
             <FormField
               name="title"
               render={({ field }) => (
@@ -269,9 +257,9 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
                 </FormItem>
               )}
             />
-            {/*Start Date and Time*/}
+            {/*start date and time*/}
             <div className="flex gap-4">
-              {/*DateFrom*/}
+              {/*dateFrom*/}
               <FormField
                 control={form.control}
                 name="dateFrom"
@@ -332,7 +320,7 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
                   </FormItem>
                 )}
               />
-              {/*TimeFrom*/}
+              {/*timeFrom*/}
               <FormField
                 control={form.control}
                 name="timeFrom"
@@ -380,10 +368,10 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
                 )}
               />
             </div>
-            {/*End Date and Time*/}
+            {/*end date and time*/}
             {includeEndDateTime && (
               <div className="flex gap-4">
-                {/*DateTo*/}
+                {/*dateTo*/}
                 <FormField
                   control={form.control}
                   name="dateTo"
@@ -433,7 +421,7 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
                     </FormItem>
                   )}
                 />
-                {/*TimeTo*/}
+                {/*timeTo*/}
                 <FormField
                   control={form.control}
                   name="timeTo"
@@ -483,7 +471,7 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
                 />
               </div>
             )}
-            {/*Include End Date and Time*/}
+            {/*include end date and time*/}
             <Button
               variant="link"
               type="button"
@@ -505,7 +493,7 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
             >
               {includeEndDateTime ? "- " : "+ "}End Date and Time
             </Button>
-            {/*Location*/}
+            {/*location*/}
             <PlacesSearchBox
               onSelectAddress={(locationAddress, locationLat, locationLon) => {
                 form.setValue("locationAddress", locationAddress);
@@ -523,7 +511,7 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
               {form.formState.errors.locationLon?.message}
               {form.formState.errors.locationLat?.message}
             </FormMessage>
-            {/*Description*/}
+            {/*description*/}
             <FormField
               name="description"
               render={({ field }) => (
@@ -543,7 +531,7 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
                 </FormItem>
               )}
             />
-            {/*Dialog Footer with Submit Button*/}
+            {/* footer */}
             <DialogFooter className="flex gap-3">
               {props.mode === "update" && (
                 <AlertDialog>

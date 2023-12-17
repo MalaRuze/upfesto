@@ -63,27 +63,13 @@ export const findEventSubscriptions = async (eventId: string) => {
       },
     });
 
-    // Map over subscriptions to create an array of user emails
+    /* Map over subscriptions to create an array of user emails */
     const subscribedEmails = subscriptions.map(
       (subscription) => subscription.user.email,
     );
     const event = subscriptions[0]?.event;
 
     return { event, subscribedEmails };
-  } catch (error) {
-    console.error(error);
-    throw new Error("Error finding subscriptions.");
-  }
-};
-
-export const findUserSubscriptions = async (userId: string) => {
-  try {
-    const subscriptions = await prisma.subscribtions.findMany({
-      where: {
-        userId,
-      },
-    });
-    return { subscriptions };
   } catch (error) {
     console.error(error);
     throw new Error("Error finding subscriptions.");

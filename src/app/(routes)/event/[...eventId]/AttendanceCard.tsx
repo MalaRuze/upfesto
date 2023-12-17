@@ -6,17 +6,23 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getEventAttendance } from "@/lib/db/attendance";
 import { ResponseEnum } from "@prisma/client";
 import { Check, Meh, X } from "lucide-react";
 
 type AttendanceCardProps = {
-  eventId: string;
+  attendance: ({
+    user: {
+      firstName: string;
+      lastName: string;
+      fullName: string;
+      email: string;
+      profileImageUrl: string;
+    };
+  } & { userId: string; eventId: string; response: ResponseEnum })[];
   hostId: string;
 };
 
-const AttendanceCard = async ({ eventId, hostId }: AttendanceCardProps) => {
-  const { attendance } = await getEventAttendance(eventId);
+const AttendanceCard = async ({ attendance, hostId }: AttendanceCardProps) => {
   const yesCount = attendance?.filter((a) => a.response === ResponseEnum.YES);
   const maybeCount = attendance?.filter(
     (a) => a.response === ResponseEnum.MAYBE,

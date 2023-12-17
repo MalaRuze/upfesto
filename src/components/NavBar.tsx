@@ -22,14 +22,9 @@ import { useRouter } from "next/navigation";
 import React from "react";
 
 const NavBar = () => {
-  /* mobile menu state */
   const [isOpen, setIsOpen] = React.useState(false);
-
-  /* clerk hooks */
   const { user } = useUser();
   const { signOut } = useClerk();
-
-  /* next router */
   const router = useRouter();
 
   /* menu items */

@@ -13,14 +13,14 @@ import { currentUser } from "@clerk/nextjs";
 import { Calendar, MapPin, Pencil, User2 } from "lucide-react";
 import React from "react";
 
+import AddToCalendarButton from "./AddToCalendarButton";
 import AttendanceCard from "./AttendanceCard";
-import CalendarButton from "./CalendarButton";
 import LocationMap from "./LocationMap";
 import NotFound from "./NotFound";
 import PostCard from "./PostCard";
 import PostHandlerDialog from "./PostHandlerDialog";
 import ResponseDialog from "./ResponseDialog";
-import ShareDialog from "./ShareDialog";
+import ShareButton from "./ShareButton";
 import SubscriptionSwitch from "./SubscriptionSwitch";
 import UploadImageButton from "./UploadImageButton";
 
@@ -174,15 +174,15 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
         </div>
         {/* attendance section */}
         <div className="space-y-4 sm:col-span-2 sm:row-span-3">
-          <AttendanceCard eventId={event.id} hostId={event.hostId} />
+          <AttendanceCard attendance={attendance} hostId={event.hostId} />
           <ResponseDialog
             eventId={event.id}
             userId={user?.id}
             currentUserAttendance={currentUserAttendance}
           />
           <div className="grid w-full grid-cols-2 gap-4">
-            <ShareDialog />
-            <CalendarButton event={event} />
+            <ShareButton />
+            <AddToCalendarButton event={event} />
           </div>
           <SubscriptionSwitch
             eventId={event.id}
@@ -196,7 +196,7 @@ const EventPage = async ({ params: { eventId } }: EventPageProps) => {
             />
           )}
         </div>
-        {/* Posts section */}
+        {/* posts section */}
         <div className=" space-y-4 sm:col-span-3">
           {/* create post button */}
           {user && isHost && (

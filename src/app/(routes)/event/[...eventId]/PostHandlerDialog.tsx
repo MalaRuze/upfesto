@@ -42,7 +42,6 @@ type UpdateProps = {
   trigger: React.ReactNode;
 };
 
-// function to get the correct schema based on the mode
 const getPostFormSchema = (mode: "create" | "update") => {
   switch (mode) {
     case "create":
@@ -57,7 +56,6 @@ const PostHandlerDialog = (props: UpdateProps | CreateProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   // get the correct schema based on the mode
   const schema = getPostFormSchema(props.mode);
-  // function to get default values for the form
   const getDefaultValues = () => {
     switch (props.mode) {
       case "update":
@@ -75,13 +73,11 @@ const PostHandlerDialog = (props: UpdateProps | CreateProps) => {
     }
   };
 
-  // initialize form
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: getDefaultValues(),
   });
 
-  // function to handle form submission
   const onSubmit = async (values: z.infer<typeof schema>) => {
     const res =
       props.mode === "create"
@@ -115,10 +111,8 @@ const PostHandlerDialog = (props: UpdateProps | CreateProps) => {
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      {/* dialog trigger */}
       <DialogTrigger asChild>{props.trigger}</DialogTrigger>
       <DialogContent>
-        {/* dialog header */}
         <DialogHeader>
           <DialogTitle>
             {props.mode === "update" ? "Edit Post" : "Add a Post"}
@@ -129,10 +123,8 @@ const PostHandlerDialog = (props: UpdateProps | CreateProps) => {
               : "Attendants subscribed to this event will be notified by email."}
           </DialogDescription>
         </DialogHeader>
-        {/* form */}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            {/* post message */}
             <FormField
               name="message"
               render={({ field }) => (
@@ -151,7 +143,6 @@ const PostHandlerDialog = (props: UpdateProps | CreateProps) => {
                 </FormItem>
               )}
             />
-            {/* dialog footer with submit button */}
             <DialogFooter className="mt-4">
               <Button type="submit">
                 {props.mode === "update" ? "Update" : "Post"}

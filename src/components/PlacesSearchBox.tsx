@@ -27,17 +27,17 @@ const PlacesSearchBox = ({
   defaultValue,
   onSelectAddress,
 }: PlacesSearchBoxProps) => {
-  // load the Google Maps API script
+  /* load the Google Maps API script */
   const { isLoaded, loadError } = useGoogleMapsScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? "",
     libraries,
   });
 
-  // check if the Google Maps API script has loaded
+  /* check if the Google Maps API script has loaded */
   if (!isLoaded) return null;
   if (loadError) return <div>Error loading location input</div>;
 
-  // if the script has loaded, render the search box
+  /* if the script has loaded, render the search box */
   return (
     <ReadySearchBox
       defaultValue={defaultValue}
@@ -51,7 +51,6 @@ const ReadySearchBox = ({
   onSelectAddress,
 }: PlacesSearchBoxProps) => {
   const { toast } = useToast();
-  // places autocomplete hook
   const {
     ready,
     value,
@@ -60,7 +59,7 @@ const ReadySearchBox = ({
     clearSuggestions,
   } = usePlacesAutocomplete({ debounce: 300, defaultValue });
 
-  // handle input change
+  /* handle input change */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
     if (e.target.value === "") {
@@ -69,7 +68,7 @@ const ReadySearchBox = ({
     onSelectAddress(e.target.value, null, null);
   };
 
-  // handle suggestion select
+  /* handle suggestion select */
   const handleSelect = async (address: string) => {
     setValue(address, false);
     clearSuggestions();
@@ -86,7 +85,7 @@ const ReadySearchBox = ({
     }
   };
 
-  // logic to handle dropdown visibility
+  /* logic to handle dropdown visibility */
   const [showSuggestions, setShowSuggestions] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const handleBlur = (event: React.FocusEvent<HTMLDivElement>) => {
@@ -105,7 +104,7 @@ const ReadySearchBox = ({
       onBlur={handleBlur}
     >
       <FormLabel>Location</FormLabel>
-      {/* Input */}
+      {/* input */}
       <Input
         placeholder="Add location"
         icon={<MapPin />}
@@ -114,7 +113,7 @@ const ReadySearchBox = ({
         onChange={handleChange}
         role="combobox"
       />
-      {/* Suggestions Dropdown */}
+      {/* suggestions dropdown */}
       {showSuggestions && status === "OK" && (
         <div
           className="absolute w-full rounded-lg border bg-white p-1 drop-shadow"

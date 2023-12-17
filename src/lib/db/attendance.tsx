@@ -100,13 +100,3 @@ export const deleteAttendance = async (userId: string, eventId: string) => {
     throw new Error("Error deleting attendance.");
   }
 };
-
-export const deleteAllAttendance = async () => {
-  try {
-    const attendance = await prisma.attendance.deleteMany();
-    return { attendance };
-  } catch (error) {
-    console.error(error);
-    throw new Error("Error deleting attendance.");
-  }
-};
