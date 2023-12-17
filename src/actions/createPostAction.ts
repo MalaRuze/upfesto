@@ -7,6 +7,7 @@ import { findEventSubscriptions } from "@/lib/db/subscriptions";
 import { PostDataSchema } from "@/lib/schema";
 import { getErrorMessage } from "@/lib/utils";
 import { PostTypeEnum } from "@prisma/client";
+import { renderAsync } from "@react-email/render";
 import { revalidatePath } from "next/cache";
 import { Resend } from "resend";
 import { z } from "zod";
@@ -54,21 +55,27 @@ const sendEmails = async (
   data: NewPostInputs,
 ) => {
   if (subscribedEmails.length > 0 && data.type === PostTypeEnum.MANUAL) {
+    const html = await renderAsync(
+      NewPostEmail({ event, message: data.message }),
+    );
     await resend.emails.send({
       from: "Upfesto <info@upfesto.com>",
       to: subscribedEmails,
       subject: "New post in " + event.title,
       text: data.message,
-      react: NewPostEmail({ event, message: data.message }),
+      html: html,
     });
   }
   if (subscribedEmails.length > 0 && data.type === PostTypeEnum.AUTO) {
+    const html = await renderAsync(
+      ImportantChangeEmail({ event, message: data.message }),
+    );
     await resend.emails.send({
       from: "Upfesto <info@upfesto.com>",
       to: subscribedEmails,
       subject: "Important changes in " + event.title,
       text: data.message,
-      react: ImportantChangeEmail({ event, message: data.message }),
+      html: html,
     });
   }
 };
