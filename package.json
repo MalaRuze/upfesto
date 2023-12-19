@@ -40,6 +40,7 @@
     "@react-email/components": "0.0.12",
     "@react-email/tailwind": "0.0.13",
     "@uploadthing/react": "^6.0.2",
+    "@vercel/speed-insights": "^1.0.2",
     "@vis.gl/react-google-maps": "^0.3.3",
     "a11y-react-emoji": "^1.2.0",
     "axios": "^1.6.0",

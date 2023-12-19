@@ -2,6 +2,7 @@ import Footer from "@/components/Footer";
 import NavBar from "@/components/NavBar";
 import { Toaster } from "@/components/ui/toaster";
 import { ClerkProvider } from "@clerk/nextjs";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
@@ -56,6 +57,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
           {children}
           <Toaster />
           <Footer />
+          <SpeedInsights />
         </body>
       </html>
     </ClerkProvider>
