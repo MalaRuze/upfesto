@@ -89,12 +89,14 @@ const ReadySearchBox = ({
   const [showSuggestions, setShowSuggestions] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const handleBlur = (event: React.FocusEvent<HTMLDivElement>) => {
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.relatedTarget)
-    ) {
-      setShowSuggestions(false);
-    }
+    setTimeout(() => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.relatedTarget)
+      ) {
+        setShowSuggestions(false);
+      }
+    }, 300); // Adjust delay as necessary
   };
 
   return (
@@ -125,7 +127,8 @@ const ReadySearchBox = ({
               size="sm"
               className="w-full justify-start"
               key={place_id}
-              onClick={() => {
+              onMouseDown={(e) => {
+                e.preventDefault(); // Prevent default to ensure selection
                 handleSelect(description);
               }}
             >
