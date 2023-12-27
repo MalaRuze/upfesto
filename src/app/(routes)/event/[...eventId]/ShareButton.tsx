@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Copy, Share2 } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const ShareButton = () => {
   const pathName = usePathname();
@@ -39,10 +40,12 @@ const ShareButton = () => {
             </Label>
             <Input id="link" defaultValue={"upfesto.com" + pathName} readOnly />
           </div>
-          <Button type="submit" size="sm" className="px-3">
-            <span className="sr-only">Copy</span>
-            <Copy className="h-4 w-4" />
-          </Button>
+          <CopyToClipboard text={"upfesto.com" + pathName}>
+            <Button type="submit" size="sm" className="px-3">
+              <span className="sr-only">Copy</span>
+              <Copy className="h-4 w-4" />
+            </Button>
+          </CopyToClipboard>
         </div>
       </DialogContent>
     </Dialog>
