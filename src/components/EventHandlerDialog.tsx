@@ -258,7 +258,7 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
               )}
             />
             {/*start date and time*/}
-            <div className="flex gap-4">
+            <div className="flex min-[364px]:flex-row gap-4 flex-col">
               {/*dateFrom*/}
               <FormField
                 control={form.control}
@@ -272,7 +272,7 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
                           <Button
                             variant={"outline"}
                             className={cn(
-                              "w-[240px] pl-3 text-left font-normal",
+                              "min-[364px]:w-[240px] w-full pl-3 text-left font-normal",
                               !field.value && "text-muted-foreground",
                             )}
                           >
@@ -370,7 +370,7 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
             </div>
             {/*end date and time*/}
             {includeEndDateTime && (
-              <div className="flex gap-4">
+              <div className="flex min-[364px]:flex-row gap-4 flex-col">
                 {/*dateTo*/}
                 <FormField
                   control={form.control}
@@ -384,7 +384,7 @@ const EventHandlerDialog = (props: CreateProps | UpdateProps) => {
                             <Button
                               variant={"outline"}
                               className={cn(
-                                "w-[240px] pl-3 text-left font-normal",
+                                "min-[364px]:w-[240px] w-full pl-3 text-left font-normal",
                                 !field.value && "text-muted-foreground",
                               )}
                               disabled={form.watch("dateFrom") === undefined}
