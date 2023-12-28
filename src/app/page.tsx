@@ -250,8 +250,8 @@ const Home = () => {
         ))}
       </div>
       {/* call to action */}
-      <div className="flex flex-col gap-8 mb-32 items-center">
-        <h3 className="font-bold text-2xl sm:text-4xl">
+      <div className="flex flex-col gap-8 mb-32 items-center px-6">
+        <h3 className="font-bold text-2xl sm:text-4xl text-center">
           Create your first event now!
         </h3>
         <Link href="/dashboard">
