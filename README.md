@@ -1,6 +1,6 @@
 # Upfesto
 
-This project is a web-based event management application developed using Next.js 14, Server Actions, React, Prisma, Tailwind, and ~MySQL~ PostgreSQL.
+This project is a web-based event management application developed using Next.js 14, Server Actions, React, Prisma, Tailwind, and PostgreSQL.
 
 *Showcase of Upfesto event page*
 ![Event page showcase](https://upfesto.com/pictures/showcase.png "Showcase of Upfesto event page")
@@ -17,7 +17,7 @@ Key features:
 10. **Dashboard**:  A one-stop dashboard for users to oversee and manage their events with ease. It offers sorting and filtering functionalities for enhanced event organization.
 11. **Landing Page**: The landing page introduces users to the application, highlighting its features and offering a snapshot of what they can expect. 
 
-Upfesto uses Prisma as an ORM for interacting with the MySQL database. The user interface is built using shadcnUI and TailwindCSS for a modern and responsive design.
+Upfesto uses Prisma as an ORM for interacting with the PostgreSQL database. The user interface is built using shadcnUI and TailwindCSS for a modern and responsive design.
 
 To learn more about the business background of the project, see [`upfesto.com/about`](https://upfesto.com/about).
 
