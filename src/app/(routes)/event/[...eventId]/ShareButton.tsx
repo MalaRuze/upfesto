@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,12 +12,24 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Copy, Share2 } from "lucide-react";
+import { Check, Copy, Share2 } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const ShareButton = () => {
   const pathName = usePathname();
+  const [copied, setCopied] = useState(false);
+
+  const shareUrl = "upfesto.com" + pathName;
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    }
+  };
 
   return (
     <Dialog>
@@ -38,14 +51,16 @@ const ShareButton = () => {
             <Label htmlFor="link" className="sr-only">
               Link
             </Label>
-            <Input id="link" defaultValue={"upfesto.com" + pathName} readOnly />
+            <Input id="link" defaultValue={shareUrl} readOnly />
           </div>
-          <CopyToClipboard text={"upfesto.com" + pathName}>
-            <Button type="submit" size="sm" className="px-3">
-              <span className="sr-only">Copy</span>
+          <Button type="button" size="sm" className="px-3" onClick={handleCopy}>
+            <span className="sr-only">Copy</span>
+            {copied ? (
+              <Check className="h-4 w-4 text-green-500" />
+            ) : (
               <Copy className="h-4 w-4" />
-            </Button>
-          </CopyToClipboard>
+            )}
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
