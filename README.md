@@ -1,6 +1,6 @@
 # Upfesto
 
-This project is a web-based event management application developed using Next.js 14, Server Actions, React, Prisma, Tailwind, and MySQL.
+This project is a web-based event management application developed using Next.js 14, Server Actions, React, Prisma, Tailwind, and ~MySQL~ PostgreSQL.
 
 *Showcase of Upfesto event page*
 ![Event page showcase](https://upfesto.com/pictures/showcase.png "Showcase of Upfesto event page")
@@ -27,7 +27,7 @@ The project is deployed using Vercel at [`upfesto.com`](https://upfesto.com/).
 
 ## Prerequisites
 
-Node version 18.x.x
+Node version 24.x.x
 
 ## Cloning the repository
 
@@ -43,6 +43,7 @@ npm i
 ## Setup .env file
 ```bash
 DATABASE_URL=
+DIRECT_URL=
 
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
 CLERK_SECRET_KEY=
@@ -60,7 +61,7 @@ NEXT_PUBLIC_GOOGLE_MAP_ID=
 RESEND_API_KEY=
 ```
 ## Setup Prisma
-Add MySQL Database(This project uses PlanetScale}
+Add database (This project uses SupaBase}
 
 ```bash
 npx prisma generate
