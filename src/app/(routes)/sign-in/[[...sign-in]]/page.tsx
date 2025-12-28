@@ -1,6 +1,5 @@
 import { SignIn } from "@clerk/nextjs";
 import type { Metadata } from "next";
-import Apology from "@/components/Apology";
 
 export const metadata: Metadata = {
   title: "Sing In | Upfesto",
@@ -9,8 +8,7 @@ export const metadata: Metadata = {
 const SignInPage = () => {
   return (
     <main className="min-h-screen">
-        <Apology />
-      {/*<SignIn />*/}
+      <SignIn />
     </main>
   );
 };
